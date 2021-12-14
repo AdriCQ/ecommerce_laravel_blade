@@ -15,14 +15,28 @@ class AppServiceProvider extends ServiceProvider
     {
         //
     }
-
     /**
-     * Bootstrap any application services.
+     * Register any application services.
      *
      * @return void
      */
     public function boot()
     {
-        //
+        // Register migrations
+        $this->setDbPaths();
+    }
+
+    /**
+     * setDbPaths
+     */
+    private function setDbPaths()
+    {
+        $MODULES = ['laravel', 'shop', 'users', 'notifications'];
+        $MIGRATIONS_FOLDER = [];
+        for ($i = 0; $i < count($MODULES); $i++) {
+            $MIGRATIONS_FOLDER[$i] = 'database/migrations/' . $MODULES[$i];
+        }
+        // Core
+        $this->loadMigrationsFrom($MIGRATIONS_FOLDER);
     }
 }
