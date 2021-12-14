@@ -1,0 +1,43 @@
+### 
+# Create
+POST /api/users HTTP/1.1
+Host: {{host}}
+Authorization: {{token}}
+
+{
+    "name": "UserName",
+    "email":"email2@email.com",
+    "phone":"555552",
+    "password": "password",
+    "password_confirmation": "password"
+}
+
+###
+# Delete
+DELETE /api/users/1 HTTP/1.1
+Host: {{host}}
+Authorization: {{token}}
+
+###
+# Login
+POST /api/users/login HTTP/1.1
+Host: {{host}}
+
+{
+    "email":"email@email.com",
+    "password": "password"
+}
+
+### 
+# Update
+PUT /api/users/2 HTTP/1.1
+Host: {{host}}
+Authorization: {{token}}
+
+{
+    "name": "UserName",
+    "email":"emaila@email.com",
+    "phone":"555552",
+    "password": "password",
+    "password_confirmation": "password"
+}
