@@ -1,0 +1,29 @@
+###
+# List
+GET /api/destinations HTTP/1.1
+Host: {{host}}
+
+###
+# Create
+POST  /api/destinations HTTP/1.1
+Host: {{host}}
+
+{
+    "name": "DestName",
+    "price": 83.20
+}
+
+###
+# Delete
+DELETE /api/destinations/1 HTTP/1.1
+Host: {{host}}
+
+###
+# Update
+PUT /api/destinations/1 HTTP/1.1
+Host: {{host}}
+
+{
+    "name": "DestName",
+    "price": 83.20
+}

@@ -8,6 +8,6 @@ use Illuminate\Database\Eloquent\Model;
 class Destination extends Model
 {
     use HasFactory;
-    protected $table = 'app_available_addresses';
+    protected $table = 'shop_destinations';
     protected $guarded = ['id'];
 }

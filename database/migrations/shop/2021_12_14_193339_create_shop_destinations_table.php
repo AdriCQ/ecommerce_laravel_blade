@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateAppAvailableAddressesTable extends Migration
+class CreateShopDestinationsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,11 +13,10 @@ class CreateAppAvailableAddressesTable extends Migration
      */
     public function up()
     {
-        Schema::create('app_available_addresses', function (Blueprint $table) {
+        Schema::create('shop_destinations', function (Blueprint $table) {
             $table->id();
-            $table->string('destination');
+            $table->string('name');
             $table->unsignedDecimal('price', 8, 2);
-
             $table->timestamps();
         });
     }
@@ -29,6 +28,6 @@ class CreateAppAvailableAddressesTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('app_available_addresses');
+        Schema::dropIfExists('shop_destinations');
     }
 }
