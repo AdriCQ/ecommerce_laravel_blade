@@ -72,7 +72,7 @@ class UserController extends Controller
                 return response()->json(['Credenciales incorrectas'], 401, [], JSON_NUMERIC_CHECK);
             $user = Auth::user();
             $user->tokens()->where('name', 'e-commerce')->delete();
-            $this->API_RESPONSE['user'] = $user;
+            $this->API_RESPONSE['profile'] = $user;
             $this->API_RESPONSE['api_token'] = $user->createToken('e-commerce')->plainTextToken;
         }
         return response()->json($this->API_RESPONSE, $this->API_STATUS, [], JSON_NUMERIC_CHECK);

@@ -41,6 +41,8 @@ class ConfigController extends Controller
         } else {
             $validator = $validator->validate();
             $config = Config::query()->first();
+            if (!$config)
+                return response()->json(['No existe la configuracion'], 400, [], JSON_NUMERIC_CHECK);
             $config->name = $validator['name'];
             $config->currency = $validator['currency'];
             $config->open = $validator['open'];

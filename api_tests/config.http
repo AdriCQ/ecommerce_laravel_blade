@@ -1,0 +1,15 @@
+###
+# Update
+POST  /api/configs HTTP/1.1
+Host: {{host}}
+Authorization: {{token}}
+
+{
+    "name": "MyAppName",
+    "currency": "USD",
+    "open": true,
+    "address":"MyAppAddress",
+    "phone": "555555",
+    "phone_extra": "555555",
+    "email": "myemail@email.email"
+}

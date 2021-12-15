@@ -16,12 +16,12 @@ class CreateAppConfigsTable extends Migration
         Schema::create('shop_configs', function (Blueprint $table) {
             $table->id();
             $table->string('name')->default('Mi Tienda');
-            $table->string('logo_path');
+            // $table->string('logo_path');
             $table->string('currency')->default('USD');
             $table->boolean('open')->default(false);
             $table->string('address')->nullable();
             $table->string('phone')->nullable();
-            $table->string('phone1')->nullable();
+            $table->string('phone_extra')->nullable();
             $table->string('email')->nullable();
             $table->timestamps();
         });
