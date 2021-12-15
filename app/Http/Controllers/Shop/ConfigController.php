@@ -14,7 +14,7 @@ class ConfigController extends Controller
      * @param Request request
      * @return Illuminate\Http\JsonResponse
      */
-    public function get(Request $request)
+    public function get()
     {
         $this->API_RESPONSE = Config::query()->first();
         return response()->json($this->API_RESPONSE, $this->API_STATUS, [], JSON_NUMERIC_CHECK);
@@ -31,8 +31,8 @@ class ConfigController extends Controller
             'currency' => ['required', 'string'],
             'open' => ['required', 'boolean'],
             'address' => ['required', 'string'],
-            'phone' => ['nullable', 'string'],
-            'phone_extra' => ['nullable', 'string'],
+            'phone' => ['nullable', 'numeric'],
+            'phone_extra' => ['nullable', 'numeric'],
             'email' => ['nullable', 'string'],
         ]);
         if ($validator->fails()) {
