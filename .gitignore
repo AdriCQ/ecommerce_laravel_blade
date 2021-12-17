@@ -10,8 +10,6 @@ app/storage/
 
 # Laravel 5 & Lumen specific
 public/storage
-public/admin
-public/client
 public/hot
 
 # Laravel 5 & Lumen specific with changed public path
