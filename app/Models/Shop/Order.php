@@ -9,6 +9,8 @@ class Order extends Model
 {
     use HasFactory;
     protected $table = 'shop_orders';
+    protected $guarded = ['id'];
+
 
     /**
      * -----------------------------------------
