@@ -29,6 +29,8 @@ class ProductController extends Controller
             $this->API_STATUS = $this->AVAILABLE_STATUS['BAD_REQUEST'];
         } else {
             $validator = $validator->validate();
+            $validator['image'] = '/images/default.jpg';
+            $validator['gallery'] = [];
             $product = new Product($validator);
             if ($product->save())
                 $this->API_RESPONSE = $product;
@@ -64,7 +66,7 @@ class ProductController extends Controller
      */
     public function list()
     {
-        $this->API_RESPONSE = Product::all();
+        $this->API_RESPONSE = Product::query()->orderByDesc('id')->get();
         return response()->json($this->API_RESPONSE, $this->API_STATUS, [], JSON_NUMERIC_CHECK);
     }
 
