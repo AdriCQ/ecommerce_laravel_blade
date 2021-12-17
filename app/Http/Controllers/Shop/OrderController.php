@@ -73,4 +73,14 @@ class OrderController extends Controller
         }
         return response()->json($this->API_RESPONSE, $this->API_STATUS, [], JSON_NUMERIC_CHECK);
     }
+    /**
+     * List
+     * @param Request request
+     * @return Illuminate\Http\JsonResponse
+     */
+    public function list()
+    {
+        $this->API_RESPONSE = Order::query()->with('order_products')->orderByDesc('updated_at')->get();
+        return response()->json($this->API_RESPONSE, $this->API_STATUS, [], JSON_NUMERIC_CHECK);
+    }
 }
