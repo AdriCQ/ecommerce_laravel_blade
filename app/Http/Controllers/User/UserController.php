@@ -20,15 +20,15 @@ class UserController extends Controller
         $validator = Validator::make($request->all(), [
             'name' => ['required', 'string'],
             'email' => ['required', 'email', 'unique:users'],
-            'phone' => ['required', 'string'],
-            'password' => ['required', 'string', 'confirmed'],
+            'phone' => ['required', 'numeric'],
+            // 'password' => ['required', 'string', 'confirmed'],
         ]);
         if ($validator->fails()) {
             $this->API_RESPONSE['ERRORS'] = $validator->errors();
             $this->API_STATUS = $this->AVAILABLE_STATUS['BAD_REQUEST'];
         } else {
             $validator = $validator->validate();
-            $validator['password'] = bcrypt($validator['password']);
+            $validator['password'] = bcrypt('password');
             $user = new User($validator);
             if ($user->save())
                 $this->API_RESPONSE = $user;
@@ -46,12 +46,22 @@ class UserController extends Controller
      */
     public function delete(int $id)
     {
+        if ($id === 1)
+            return response()->json(['El administrador no se puede eliminar'], 400, [], JSON_NUMERIC_CHECK);
         $user = User::query()->find($id);
         if (!$user->delete())
             return response()->json($user->errors, 503, [], JSON_NUMERIC_CHECK);
         return response()->json($user, $this->API_STATUS, [], JSON_NUMERIC_CHECK);
     }
-
+    /**
+     * ListUsers
+     * @return Illuminate\Http\JsonResponse
+     */
+    public function list()
+    {
+        $this->API_RESPONSE = User::all();
+        return response()->json($this->API_RESPONSE, $this->API_STATUS, [], JSON_NUMERIC_CHECK);
+    }
     /**
      * Login
      * @param Request request
@@ -86,18 +96,21 @@ class UserController extends Controller
     {
         $validator = Validator::make($request->all(), [
             'name' => ['required', 'string'],
-            'email' => ['required', 'email', 'unique:users'],
-            'phone' => ['required', 'string'],
-            'password' => ['required', 'string', 'confirmed'],
+            'email' => ['required', 'email'],
+            'phone' => ['required', 'numeric'],
+            // 'password' => ['required', 'string', 'confirmed'],
         ]);
         if ($validator->fails()) {
             $this->API_RESPONSE['ERRORS'] = $validator->errors();
             $this->API_STATUS = $this->AVAILABLE_STATUS['BAD_REQUEST'];
         } else {
             $validator = $validator->validate();
-            $validator['password'] = bcrypt($validator['password']);
-            $user = User::query()->where('id', $id)->update($validator);
-            $this->API_RESPONSE = $user;
+            if ($id === 1)
+                return response()->json(['El administrador no se puede eliminar'], 400, [], JSON_NUMERIC_CHECK);
+            // $validator['password'] = bcrypt($validator['password']);
+            User::query()->where('id', $id)->update($validator);
+            $validator['id'] = $id;
+            $this->API_RESPONSE = $validator;
         }
         return response()->json($this->API_RESPONSE, $this->API_STATUS, [], JSON_NUMERIC_CHECK);
     }

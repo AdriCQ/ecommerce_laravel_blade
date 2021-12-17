@@ -5,7 +5,9 @@ namespace App\Http\Controllers\Shop;
 use App\Http\Controllers\Controller;
 use App\Models\Shop\Product;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
+use Intervention\Image\Facades\Image as ImageIntervention;
 
 class ProductController extends Controller
 {
@@ -35,6 +37,34 @@ class ProductController extends Controller
                 $this->API_STATUS = $this->AVAILABLE_STATUS['SERVICE_UNAVAILABLE'];
             }
         }
+        return response()->json($this->API_RESPONSE, $this->API_STATUS, [], JSON_NUMERIC_CHECK);
+    }
+
+    /**
+     * delete
+     * @param Request request
+     * @return Illuminate\Http\JsonResponse
+     */
+    public function delete(int $productId)
+    {
+        $product = Product::query()->find($productId);
+        if ($product->delete())
+            $this->API_RESPONSE = $product;
+        else {
+            $this->API_RESPONSE = $product->errors;
+            $this->API_STATUS = $this->AVAILABLE_STATUS['SERVICE_UNAVAILABLE'];
+        }
+        return response()->json($this->API_RESPONSE, $this->API_STATUS, [], JSON_NUMERIC_CHECK);
+    }
+
+    /**
+     * List
+     * @param Request request
+     * @return Illuminate\Http\JsonResponse
+     */
+    public function list()
+    {
+        $this->API_RESPONSE = Product::all();
         return response()->json($this->API_RESPONSE, $this->API_STATUS, [], JSON_NUMERIC_CHECK);
     }
 
@@ -70,22 +100,70 @@ class ProductController extends Controller
         }
         return response()->json($this->API_RESPONSE, $this->API_STATUS, [], JSON_NUMERIC_CHECK);
     }
-
-
     /**
-     * Update
+     * UploadMainImage
      * @param Request request
      * @return Illuminate\Http\JsonResponse
      */
-    public function delete(int $productId)
+    public function uploadMainImage(int $id, Request $request)
     {
-        $product = Product::query()->find($productId);
-        if ($product->delete())
+        $validator = Validator::make($request->all(), [
+            'image' => ['required', 'image'],
+        ]);
+        if ($validator->fails()) {
+            $this->API_RESPONSE['ERRORS'] = $validator->errors();
+            $this->API_STATUS = $this->AVAILABLE_STATUS['BAD_REQUEST'];
+        } else {
+            $validator = $validator->validate();
+            $product = Product::query()->find($id);
+            if (!$product)
+                return response()->json(['Producto no encontrado'], 400, [], JSON_NUMERIC_CHECK);
+            $path = $this->uploadImage($validator['image'], $product, 'main');
+            $product->image = $path;
+            $product->save();
             $this->API_RESPONSE = $product;
-        else {
-            $this->API_RESPONSE = $product->errors;
-            $this->API_STATUS = $this->AVAILABLE_STATUS['SERVICE_UNAVAILABLE'];
         }
         return response()->json($this->API_RESPONSE, $this->API_STATUS, [], JSON_NUMERIC_CHECK);
+    }
+
+    /**
+     * Upload Gallery Images
+     * @param Request request
+     * @return Illuminate\Http\JsonResponse
+     */
+    public function uploadGalleryImages(int $id, Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+            'images' => ['required', 'array'],
+            'images.*' => ['required', 'image']
+        ]);
+        if ($validator->fails()) {
+            $this->API_RESPONSE['ERRORS'] = $validator->errors();
+            $this->API_STATUS = $this->AVAILABLE_STATUS['BAD_REQUEST'];
+        } else {
+            $validator = $validator->validate();
+        }
+        return response()->json($this->API_RESPONSE, $this->API_STATUS, [], JSON_NUMERIC_CHECK);
+    }
+
+    /**
+     * 
+     */
+    private function uploadImage($image, Product $product, $type = 'main')
+    {
+        $filename = $product->id . '-' . $type . '.jpg';
+        $storage_path = '/public/products/images';
+        $public_path = '/storage/products/images';
+        if (!Storage::exists($storage_path))
+            Storage::makeDirectory($storage_path);
+        $resizeDimension = 480;
+        $pathCpy = $storage_path  . '/' . $filename;
+        Storage::put($pathCpy, '');
+        ImageIntervention::make($image)
+            ->resize($resizeDimension, null, function ($constraints) {
+                $constraints->aspectRatio();
+            })->save(storage_path('/app' . $pathCpy));
+
+        return $public_path . '/' . $filename;
     }
 }

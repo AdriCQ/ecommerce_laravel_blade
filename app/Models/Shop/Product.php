@@ -9,4 +9,5 @@ class Product extends Model
 {
     use HasFactory;
     protected $table = 'shop_products';
+    protected $casts = ['gallery' => 'array'];
 }
