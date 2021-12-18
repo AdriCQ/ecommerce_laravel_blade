@@ -19,7 +19,7 @@ class CreateShopProductsTable extends Migration
             $table->unsignedDecimal('price', 8, 2);
             $table->unsignedMediumInteger('stock');
             $table->string('image');
-            $table->string('gallery')->nullable();
+            $table->string('gallery')->default('[]');
             $table->text('description');
             $table->timestamps();
         });
