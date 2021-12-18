@@ -14,8 +14,8 @@ class CreateShopOrderProductsTable extends Migration
     public function up()
     {
         Schema::create('shop_order_products', function (Blueprint $table) {
-            $table->foreignId('shop_order_id')->constrained('shop_orders');
-            $table->foreignId('shop_product_id')->constrained('shop_products');
+            $table->foreignId('shop_order_id')->constrained('shop_orders')->onDelete('cascade');
+            $table->foreignId('shop_product_id')->constrained('shop_products')->onDelete('cascade');
             $table->unsignedSmallInteger('qty');
         });
     }

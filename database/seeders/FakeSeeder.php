@@ -2,9 +2,11 @@
 
 namespace Database\Seeders;
 
+use App\Models\Shop\Destination;
 use App\Models\Shop\Order;
 use App\Models\Shop\OrderProduct;
 use App\Models\Shop\Product;
+use App\Models\User;
 use Faker\Factory;
 use Illuminate\Database\Seeder;
 
@@ -19,9 +21,51 @@ class FakeSeeder extends Seeder
     {
         $this->call([DatabaseSeeder::class]);
 
+        $this->seedColaborators();
+        $this->seedDestinations();
         $this->seedProducts();
         $this->seedOrders();
         $this->seedOrderProducts();
+    }
+
+    /**
+     * seedColaborators
+     */
+    private function seedColaborators($limits = 10, $repeats = 1)
+    {
+        $faker = Factory::create();
+
+        for ($r = 0; $r < $repeats; $r++) {
+            $models = [];
+            for ($l = 0; $l < $limits; $l++) {
+                array_push($models, [
+                    'name' => $faker->name(),
+                    'email' => $faker->email,
+                    'phone' => $faker->phoneNumber,
+                    'password' => bcrypt('password'),
+                    'type' => 'RASTREO'
+                ]);
+            }
+            User::query()->insert($models);
+        }
+    }
+    /**
+     * seedDestinations
+     */
+    private function seedDestinations($limits = 10, $repeats = 1)
+    {
+        $faker = Factory::create();
+
+        for ($r = 0; $r < $repeats; $r++) {
+            $models = [];
+            for ($l = 0; $l < $limits; $l++) {
+                array_push($models, [
+                    'name' => $faker->address,
+                    'price' => $faker->randomFloat(2, 2, 100),
+                ]);
+            }
+            Destination::query()->insert($models);
+        }
     }
     /**
      * 
@@ -34,7 +78,7 @@ class FakeSeeder extends Seeder
             $models = [];
             for ($l = 0; $l < $limits; $l++) {
                 array_push($models, [
-                    'name' => $faker->words(4, true),
+                    'name' => $faker->name(),
                     'address' => $faker->address,
                     'phone' => $faker->phoneNumber,
                     'email' => $faker->email,
