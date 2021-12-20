@@ -16,7 +16,7 @@ class Product extends Component
      */
     public function __construct($product)
     {
-        Log::info($product);
+        // Log::info($product);
         $this->product = $product;
     }
 

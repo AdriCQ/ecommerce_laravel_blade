@@ -7,14 +7,14 @@ use Illuminate\View\Component;
 
 class Product extends Component
 {
-    public string $title;
-    public array $products;
+    public $title;
+    public $products;
     /**
      * Create a new component instance.
      *
      * @return void
      */
-    public function __construct(string $title, array $products)
+    public function __construct($title, $products)
     {
         $this->title = $title;
         $this->products = $products;
