@@ -38,7 +38,7 @@ class ViewController extends Controller
             foreach ($validator['productsCart'] as $pr) {
                 $prod = Product::query()->find($pr->product->id);
                 if (!$prod)
-                    return 'error';
+                    view('cart')->with($this->DATA);
                 array_push($products, ['product' => $prod, 'qty' => $pr->qty]);
             }
             $this->DATA['productsCart'] = $products;

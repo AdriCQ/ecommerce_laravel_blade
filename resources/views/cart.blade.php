@@ -33,7 +33,10 @@
                                         </tr>
                                     </thead>
                                     <tbody>
+                                        @if ( isset($productsCart) && count($productsCart))
+                                            
                                         @foreach ($productsCart as $product)
+                                        @if(isset($product) && isset($product['qty']) && isset($product['product']))
                                         <tr class="cart_item">
                                             <td class="product-remove">
                                                 <a title="Remove this item" class="remove" href="#">×</a> 
@@ -61,7 +64,10 @@
                                                 <span class="amount">${{ $product['qty'] * $product['product']['price'] }}.00</span> 
                                             </td>
                                         </tr>
+                                        @endif()
                                         @endforeach
+                                        @endif()
+
                                         
                                         <tr>
                                             <td class="actions" colspan="6">
