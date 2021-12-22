@@ -17,7 +17,7 @@ function shopCartHelper() {
             }
         } else {
             productsCart.push({
-                product, qty
+                product: { id: product.id }, qty
             });
         }
         document.getElementById('cart-count').innerHTML = productsCart.length;

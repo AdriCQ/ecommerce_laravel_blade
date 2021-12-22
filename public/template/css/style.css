@@ -83,10 +83,13 @@ z-index: 999;}
 
 .logo h1 {
     font-size: 40px;
-    margin: 30px 0;font-weight: 400;
+    margin-bottom: 10px;
+    margin-top: 10px;
+    font-weight: 400;
 }
 .logo h1 a {
-    color: #999;
+    /* color: #999; */
+    color: #fea500;
 }
 .logo h1 a:hover {text-decoration: none;opacity: .7}
 .logo h1 a span {
@@ -96,12 +99,12 @@ z-index: 999;}
     border: 1px solid #ddd;
     float: right;
     font-size: 18px;
-    margin-top: 40px;
+    margin-top: 1rem;
     padding: 10px;
     position: relative;
 }
 .shopping-item a {
-    color: #666;
+    color: #1d1d1d;
 }
 .cart-amunt {
     color: #5a88ca;
@@ -147,7 +150,7 @@ z-index: 999;}
     padding: 20px;
 }
 
-.mainmenu-area ul.navbar-nav li:hover a, .mainmenu-area ul.navbar-nav li.active a {background: #5a88ca; color:#FFF;}
+.mainmenu-area ul.navbar-nav li:hover a, .mainmenu-area ul.navbar-nav li.active a {background: #1d1d1d; color:#fea500;}
 .mainmenu-area .nav > li > a:focus {color: #FFF;}
 
 .slider-area { width:80%; position:relative; margin:0 auto; padding:5px;}
@@ -230,7 +233,7 @@ z-index: 999;}
 .block-slider .bx-pager-item a{
 	width: 100%;
 	height: 100%;
-	background: #999;
+	background: #fea500;
 	display: block;
 	border-radius: 50%;
 }
@@ -395,9 +398,9 @@ z-index: 999;}
   width: 100%;transition: .4s;
 }
 .product-hover a {
-    background: none repeat scroll 0 0 #5a88ca;
+    background: none repeat scroll 0 0 #fea500;
     border-radius: 5px;
-    color: #fff;
+    color: #1d1d1d;
     display: block;
     font-size: 16px;
     left: 10%;
@@ -406,11 +409,12 @@ z-index: 999;}
     position: absolute;
     text-align: center;
     text-transform: uppercase;
-    border: 1px solid #5a88ca;
+    border: 1px solid #fea500;
     width: 80%;z-index: 99;transition: .4s;
 }
 .product-hover a:hover {
   background: #000;
+  color: #fea500;
   text-decoration: none;border-color: #444;
 }
 .product-carousel-price ins {
@@ -457,7 +461,7 @@ z-index: 999;}
   right: 0;
   top: 0;
 }
-
+.owl-prev, .owl-next { visibility: hidden; }
 .latest-product .owl-nav div, .related-products-wrapper .owl-nav div {
   background:#fa8072;
   color:#FFF;
@@ -575,7 +579,8 @@ padding: 35px 0 180px;}
 }
 .footer-menu a {
     display: block;
-    padding: 5px 0;color: #999
+    padding: 5px 0;
+    color: #999;
 }
 
 
@@ -608,15 +613,16 @@ padding: 35px 0 180px;}
     height: 15rem;
 }
 .newsletter-form input[type="submit"] {
-    background: none repeat scroll 0 0 #5a88ca;
+    background: none repeat scroll 0 0 #fea500;
     border: medium none;
-    color: #fff;
+    color: #1d1d1d;
     display: inline-block;
     font-size: 18px;
     padding: 7px 20px;
-    text-transform: uppercase;border: 1px solid #5a88ca;
+    text-transform: uppercase;
+    border: 1px solid #1d1d1d;
 }
-.newsletter-form input[type="submit"]:hover {background: #222;border-color: #666}
+.newsletter-form input[type="submit"]:hover {background: #1d1d1d;border-color: #fea500; color: #fea500}
 .newsletter-form {
     margin-top: 25px;
 }
@@ -1119,4 +1125,9 @@ div.cart-collaterals ul.products li.product:hover .add_to_cart_button{background
 
 .pagination > li > a, .pagination > li > span {
   color: #5a88ca;
+}
+
+.c-primary {
+    background-color: #fea500;
+    color: #1d1d1d;
 }

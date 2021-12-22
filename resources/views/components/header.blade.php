@@ -2,9 +2,10 @@
     <div class="container">
         <div class="row">
             <div class="col-sm-6">
+                <a href="{{ route('home') }}">
                 <div class="logo">
-                    <h1><a href="{{ route('home') }}"><img src="{{ asset('template/img/logo.png') }}"></a></h1>
-                </div>
+                    <h1><a href="{{ route('home') }}">{{ $config['name'] }}</a></h1>
+                </div></a>
             </div>
             
             <div class="col-sm-6">

@@ -72,7 +72,7 @@
                                         <tr>
                                             <td class="actions" colspan="6">
                                                 <div name="update_cart" onclick="shopCartHelper().clear()" class="btn btn-danger btn-lg">Limpiar Carrito</div>
-                                                <div class="btn btn-success btn-lg">Comprar</div>
+                                                <div class="btn c-primary btn-lg">Comprar</div>
                                             </td>
                                         </tr>
                                     </tbody>
