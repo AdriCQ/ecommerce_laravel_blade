@@ -40,6 +40,7 @@
   <body>
 
     @include('components.header')
+    @include('components.modals')
 
     @yield('content')
 
@@ -48,7 +49,8 @@
 
     <script src="js/vendor/axios.min.js"></script>
     <!-- Latest jQuery form server -->
-    <script src="https://code.jquery.com/jquery.min.js"></script>
+    <script src="{{ asset('template/js/jquery.min.js') }}"></script>
+    {{-- <script src="https://code.jquery.com/jquery.min.js"></script> --}}
     
     <!-- Bootstrap JS form CDN -->
     <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
@@ -63,6 +65,7 @@
     <!-- Main Script -->
     <script src="{{ asset('template/js/main.js') }}"></script>
     <script src="{{ asset('js/cart.js') }}"></script>
+    <script src="{{ asset('js/modal.js') }}"></script>
 
     <script>
         shopCartHelper().load();

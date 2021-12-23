@@ -20,9 +20,10 @@ function shopCartHelper() {
                 product: { id: product.id }, qty
             });
         }
+        modalHandler().success('Producto Añadido', '<p>Ha Añadido correctamente el producto al carrito</p>');
         document.getElementById('cart-count').innerHTML = productsCart.length;
         save();
-        load();
+        // load();
     }
 
     function removeProductCart(_key) {

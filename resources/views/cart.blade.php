@@ -138,7 +138,7 @@ const OrderForm = {
             }).then(_resp=>{
                 if(_resp.data)
                     this.productsCart = _resp.data;
-            }).catch(_e=>{console.log({error: _e})})
+            }).catch(_e=>{console.log({error: _e}); modalHandler().error('Error', 'No se pudo cargar los productos');})
         },
         productDetails(_id){
             return this.host + '/product-details/' + _id;
@@ -151,8 +151,8 @@ const OrderForm = {
                     'Accept': 'application/json'
                 }
             })
-                .then(_r=>{console.log({response: _r})})
-                .catch(_e=>{console.log({error: _e})});
+                .then(_r=>{console.log({response: _r}); modalHandler().success('Orden completada', 'La orden se ha almacenado en nuestros servidores')})
+                .catch(_e=>{console.log({error: _e}); modalHandler().error('Error', 'No se pudo completar la orden')});
         }
     }
 }
