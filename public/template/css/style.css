@@ -111,9 +111,9 @@ z-index: 999;}
     font-weight: 700;
 }
 .product-count {
-    background: none repeat scroll 0 0 #5a88ca;
+    background: none repeat scroll 0 0 #fea500;
     border-radius: 50%;
-    color: #fff;
+    color: #1d1d1d;
     display: inline-block;
     font-size: 10px;
     height: 20px;
@@ -141,6 +141,7 @@ z-index: 999;}
 }
 .shopping-item:hover .product-count {
     background: none repeat scroll 0 0 #000;
+    color: #fea500;
 }
 
 
