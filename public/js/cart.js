@@ -44,7 +44,6 @@ function shopCartHelper() {
         } else {
             productsCart = []
         }
-        console.log({ productsCart })
         loadCartUrl(productsCart);
         return productsCart;
     }
@@ -67,7 +66,12 @@ function shopCartHelper() {
         window.location = window.location.origin;
     }
 
+    function submit(name, address, email, phone, products) {
+        const host = window.location.origin;
+        axios.post(host + '/api/orders', { name, address, email, phone, products }).then(_r => { console.log(_r) }).catch(_e => { console.log(_e) })
+    }
+
     return {
-        productsCart, addProductCart, removeProductCart, load, save, loadCartUrl, clear
+        productsCart, addProductCart, removeProductCart, load, save, loadCartUrl, clear, submit
     }
 }

@@ -687,14 +687,15 @@ width: 10px;
   margin: 10px 0 0;
 }
 
-.product-big-title-area {background: url(img/crossword.png) repeat scroll 0 0 #5a88ca}
+.product-big-title-area {background-color: #fea500; }
 
 .product-bit-title h2 {
   font-family: raleway;
   font-size: 50px;
   font-weight: 200;
   margin: 0;
-  padding: 50px 0;color: #fff;
+  padding: 50px 0;
+  color: #1d1d1d;
 }
 
 .single-product-area .zigzag-bottom {background-color: #f4f4f4}

@@ -6,7 +6,9 @@ use App\Http\Controllers\Controller;
 use App\Models\Shop\Destination;
 use App\Models\Shop\Order;
 use App\Models\Shop\Product;
+use App\Notifications\OrderNotification;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Notification;
 use Illuminate\Support\Facades\Validator;
 
 class OrderController extends Controller
@@ -19,13 +21,13 @@ class OrderController extends Controller
     public function create(Request $request)
     {
         $validator = Validator::make($request->all(), [
-            'destination_id' => ['required', 'integer'],
+            // 'destination_id' => ['required', 'integer'],
             'name' => ['required', 'string'],
             'address' => ['required', 'string'],
             'email' => ['required', 'string'],
-            'phone' => ['required', 'array'],
+            'phone' => ['required', 'numeric'],
             // Products
-            'products.*.product_id' => ['required', 'integer'],
+            'products.*.product.id' => ['required', 'integer'],
             'products.*.qty' => ['required', 'integer'],
         ]);
         if ($validator->fails()) {
@@ -33,15 +35,16 @@ class OrderController extends Controller
             $this->API_STATUS = $this->AVAILABLE_STATUS['BAD_REQUEST'];
         } else {
             $validator = $validator->validate();
-            $destination = Destination::query()->find($validator['destination_id']);
-            if (!$destination)
-                return response()->json(['Destinacion no encontrada'], 400, [], JSON_NUMERIC_CHECK);
+            // $destination = Destination::query()->find($validator['destination_id']);
+            // if (!$destination)
+            //     return response()->json(['Destinacion no encontrada'], 400, [], JSON_NUMERIC_CHECK);
 
             // Check products available
-            $orderPrice = $destination->price;
+            // $orderPrice = $destination->price;
+            $orderPrice = 0;
             $orderProducts = [];
             foreach ($validator['products'] as $prodReq) {
-                $productModel = Product::query()->find($prodReq['product_id']);
+                $productModel = Product::query()->find($prodReq['product']['id']);
                 if (!$productModel)
                     return response()->json(['Producto no encontrado'], 400, [], JSON_NUMERIC_CHECK);
                 if ($productModel->stock < $prodReq['qty'])
@@ -50,7 +53,7 @@ class OrderController extends Controller
                 if (!$productModel->save())
                     return response()->json($productModel->errors, 503, [], JSON_NUMERIC_CHECK);
                 array_push($orderProducts, [
-                    'shop_product_id' => $prodReq['product_id'],
+                    'shop_product_id' => $prodReq['product']['id'],
                     'qty' => $prodReq['qty']
                 ]);
                 $orderPrice += $productModel->price;
@@ -66,6 +69,8 @@ class OrderController extends Controller
                 $order->order_products()->createMany($orderProducts);
                 $order->order_products;
                 $this->API_RESPONSE = $order;
+                // Send email Notification
+                Notification::send([], new OrderNotification($order));
             } else {
                 $this->API_RESPONSE = $order->errors;
                 $this->API_STATUS = $this->AVAILABLE_STATUS['SERVICE_UNAVAILABLE'];

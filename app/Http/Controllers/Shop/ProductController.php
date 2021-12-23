@@ -13,6 +13,33 @@ use Intervention\Image\Facades\Image as ImageIntervention;
 class ProductController extends Controller
 {
     /**
+     * ProductCart
+     * @param Request request
+     * @return Illuminate\Http\JsonResponse
+     */
+    public function productCart(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+            'productsCart' => ['required', 'array'],
+        ]);
+        if ($validator->fails()) {
+            $this->API_RESPONSE['ERRORS'] = $validator->errors();
+            $this->API_STATUS = $this->AVAILABLE_STATUS['BAD_REQUEST'];
+        } else {
+            $validator = $validator->validate();
+            $products = [];
+            foreach ($validator['productsCart'] as $pr) {
+                $pr = json_decode($pr, true);
+                $prod = Product::query()->find($pr['product']['id']);
+                if (!$prod)
+                    return response()->json(['Producto no encontrado'], 400,  [], JSON_NUMERIC_CHECK);
+                array_push($products, ['product' => $prod, 'qty' => $pr['qty']]);
+            }
+            $this->API_RESPONSE = $products;
+        }
+        return response()->json($this->API_RESPONSE, $this->API_STATUS, [], JSON_NUMERIC_CHECK);
+    }
+    /**
      * CreateProduct
      * @param Request request
      * @return Illuminate\Http\JsonResponse
