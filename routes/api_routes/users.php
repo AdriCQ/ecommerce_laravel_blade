@@ -7,6 +7,7 @@ use App\Http\Controllers\User\UserController;
  * User API REST ROUTES
  */
 Route::post('/login', [UserController::class, 'login']);
+Route::post('/contact', [UserController::class, 'contact']);
 
 Route::middleware('auth:sanctum')->group(function () {
     Route::get('/', [UserController::class, 'list']);

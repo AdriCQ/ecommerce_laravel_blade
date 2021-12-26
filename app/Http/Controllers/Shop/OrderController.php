@@ -3,9 +3,12 @@
 namespace App\Http\Controllers\Shop;
 
 use App\Http\Controllers\Controller;
+use App\Models\Shop\Client;
 use App\Models\Shop\Destination;
 use App\Models\Shop\Order;
 use App\Models\Shop\Product;
+use App\Models\User;
+use App\Notifications\AdminOrderNotification;
 use App\Notifications\OrderNotification;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Notification;
@@ -65,12 +68,20 @@ class OrderController extends Controller
                 'phone' => $validator['phone'],
                 'total_price' => $orderPrice,
             ]);
+            $client = new Client(
+                $validator['name'],
+                $validator['email'],
+                $validator['phone'],
+                $validator['address'],
+            );
             if ($order->save()) {
                 $order->order_products()->createMany($orderProducts);
                 $order->order_products;
                 $this->API_RESPONSE = $order;
+                $sellUsers = User::query()->where('type', 'VENTAS')->get();
                 // Send email Notification
-                Notification::send([], new OrderNotification($order));
+                Notification::send($sellUsers, new AdminOrderNotification($order));
+                Notification::send($client, new OrderNotification($order));
             } else {
                 $this->API_RESPONSE = $order->errors;
                 $this->API_STATUS = $this->AVAILABLE_STATUS['SERVICE_UNAVAILABLE'];

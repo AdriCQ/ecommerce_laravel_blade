@@ -16,6 +16,7 @@ class ConfigSeeder extends Seeder
     {
         Config::query()->insert([
             "name" => "MyAppName",
+            "description" => "Lorem ipsum dolor sit amet consectetur adipisicing elit. Qui, adipisci, suscipit ut repellat voluptatum reprehenderit nihil doloremque impedit ullam velit debitis, soluta nam expedita mollitia incidunt atque dolorum architecto. Tempore.",
             "currency" => "CUP",
             "open" => false,
             "address" => "MyAppAddress",

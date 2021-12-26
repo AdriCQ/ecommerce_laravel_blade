@@ -16,6 +16,7 @@ class CreateAppConfigsTable extends Migration
         Schema::create('shop_configs', function (Blueprint $table) {
             $table->id();
             $table->string('name')->default('Mi Tienda');
+            $table->text('description');
             // $table->string('logo_path');
             $table->string('currency')->default('USD');
             $table->boolean('open')->default(false);

@@ -4,9 +4,11 @@ namespace App\Http\Controllers\User;
 
 use App\Http\Controllers\Controller;
 use App\Models\User;
+use App\Notifications\ContactNotification;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Notification;
 use Illuminate\Support\Facades\Validator;
 
 class UserController extends Controller
@@ -22,6 +24,7 @@ class UserController extends Controller
             'name' => ['required', 'string'],
             'email' => ['required', 'email', 'unique:users'],
             'phone' => ['required', 'numeric'],
+            'type' => ['required', 'in:CONTACTO,RASTREO,VENTAS'],
             // 'password' => ['required', 'string', 'confirmed'],
         ]);
         if ($validator->fails()) {
@@ -99,6 +102,7 @@ class UserController extends Controller
             'name' => ['required', 'string'],
             'email' => ['required', 'email'],
             'phone' => ['required', 'numeric'],
+            'type' => ['required', 'in:CONTACTO,RASTREO,VENTAS'],
             // 'password' => ['required', 'string', 'confirmed'],
         ]);
         if ($validator->fails()) {
@@ -115,7 +119,6 @@ class UserController extends Controller
         }
         return response()->json($this->API_RESPONSE, $this->API_STATUS, [], JSON_NUMERIC_CHECK);
     }
-
     /**
      * Update Password
      * @param Request request
@@ -139,6 +142,32 @@ class UserController extends Controller
             $user->tokens()->delete();
             if (!$user->save())
                 $this->API_STATUS = 503;
+        }
+        return response()->json($this->API_RESPONSE, $this->API_STATUS, [], JSON_NUMERIC_CHECK);
+    }
+
+    /**
+     * contact
+     * @param Request request
+     * @return Illuminate\Http\JsonResponse
+     */
+    public function contact(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+            'email' => ['required', 'email'],
+            'subject' => ['required', 'string'],
+            'message' => ['required', 'string'],
+        ]);
+        if ($validator->fails()) {
+            $this->API_RESPONSE['ERRORS'] = $validator->errors();
+            $this->API_STATUS = $this->AVAILABLE_STATUS['BAD_REQUEST'];
+        } else {
+            $validator = $validator->validate();
+            $contactUsers = User::query()->where('type', 'CONTACTO')->get();
+            Notification::send(
+                $contactUsers,
+                new ContactNotification($validator['email'], $validator['subject'], $validator['message'])
+            );
         }
         return response()->json($this->API_RESPONSE, $this->API_STATUS, [], JSON_NUMERIC_CHECK);
     }
