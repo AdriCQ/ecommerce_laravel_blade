@@ -10,10 +10,10 @@ function shopCartHelper() {
         load();
         const index = productsCart.findIndex(_p => _p.product.id === product.id);
         if (index >= 0) {
-            const qty = Number(productsCart[index].qty);
+            const productQty = Number(productsCart[index].qty);
             productsCart[index] = {
-                product: product,
-                qty: qty + 1
+                product: { id: product.id },
+                qty: productQty + Number(qty)
             }
         } else {
             productsCart.push({
@@ -32,7 +32,6 @@ function shopCartHelper() {
             productsCart.splice(_key, 1);
         }
         save();
-        load();
     }
     /**
      * load
@@ -55,6 +54,10 @@ function shopCartHelper() {
         localStorage.setItem(STORAGE_KEY, JSON.stringify(productsCart))
     }
 
+    function update(_cart) {
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(_cart))
+    }
+
     function loadCartUrl(productsCart) {
         // load();
         const host = window.location.origin;
@@ -73,6 +76,6 @@ function shopCartHelper() {
     }
 
     return {
-        productsCart, addProductCart, removeProductCart, load, save, loadCartUrl, clear, submit
+        productsCart, addProductCart, removeProductCart, load, save, loadCartUrl, clear, submit, update
     }
 }

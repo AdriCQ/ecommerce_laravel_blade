@@ -1133,3 +1133,24 @@ div.cart-collaterals ul.products li.product:hover .add_to_cart_button{background
     background-color: #fea500;
     color: #1d1d1d;
 }
+
+.location-card {
+    width: 100%; min-height: 10rem;
+    min-width: 4rem;
+    text-align: center;
+    cursor: pointer;
+    /* border-radius: 5px; */
+    /* border: solid 1px rgba(0,0,0,0.3); */
+    /* background-color: rgba(255,151,20,0.2); */
+    box-shadow:0px 0px 5px 0px #1d1d1d;
+    margin-top: 1rem;
+    padding: 0.5rem;
+}
+
+.location-card .icon{
+    font-size: 2.5rem;
+}
+
+.location-card .location-title{
+    font-size: 1.5rem;
+}

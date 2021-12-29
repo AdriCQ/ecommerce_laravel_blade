@@ -23,9 +23,9 @@ class OrderNotification extends Notification
      */
     public function __construct(Order $order)
     {
-        $this->$order = $order;
-        $hash = $this->order->getHash();
-        $this->url = url('/order/' . $this->order->id . '?hash=' . $hash);
+        $this->order = $order;
+        $hash = $order->getHash();
+        $this->url = url('/order/' . $order->id . '?hash=' . $hash);
     }
 
     /**

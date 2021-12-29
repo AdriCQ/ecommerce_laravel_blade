@@ -34,7 +34,7 @@
                     {{-- <li><a href="shop.html">Shop page</a></li> --}}
                     {{-- <li><a href="single-product.html">Single product</a></li> --}}
                     <li class="{{ $active == 'cart' ? 'active':'' }}"><a id="to-cart-tab" href="#">Carrito</a></li>
-                    <li class="{{ $active == 'checkout' ? 'active':'' }}"><a href="#">Rastreo</a></li>
+                    <li class="{{ $active == 'checkout' ? 'active':'' }}"><a href="{{ route('find') }}">Rastreo</a></li>
                     <li><a href="#footer-form">Contacto</a></li>
                 </ul>
             </div>  

@@ -6,11 +6,8 @@ use App\Models\Shop\Config;
 use App\Models\Shop\Destination;
 use App\Models\Shop\Order;
 use App\Models\Shop\Product;
-use App\Notifications\OrderNotification;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Facades\Log;
-use Illuminate\Support\Facades\Notification;
 use Illuminate\Support\Facades\Validator;
 
 class ViewController extends Controller
@@ -20,8 +17,10 @@ class ViewController extends Controller
     public function __construct()
     {
         $config = Config::query()->first();
+        $destinations = Destination::all()->toArray();
         $this->DATA['config'] = $config;
         $this->DATA['active'] = '';
+        $this->DATA['destinations'] = $destinations;
     }
     /**
      * cart
@@ -49,6 +48,14 @@ class ViewController extends Controller
             $this->DATA['productsCart'] = $products;
         }
         return view('cart')->with($this->DATA);
+    }
+    /**
+     * @method find
+     * @return view
+     */
+    public function find()
+    {
+        return view('find')->with($this->DATA);
     }
     /**
      * home

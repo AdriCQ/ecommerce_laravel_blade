@@ -22,9 +22,9 @@
                 <div class="footer-menu">
                     <h2 class="footer-wid-title">Navegación</h2>
                     <ul>
-                        <li><a href="#">Inicio</a></li>
-                        <li><a href="#">Carrito</a></li>
-                        <li><a href="#">Rastrear</a></li>
+                        <li><a href="{{ route('home') }}">Inicio</a></li>
+                        <li><a href="{{ route('cart') }}">Carrito</a></li>
+                        <li><a href="{{ route('find') }}">Rastrear</a></li>
                     </ul>                        
                 </div>
             </div>

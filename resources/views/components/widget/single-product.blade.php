@@ -12,9 +12,11 @@
     </div>
     <div class="product-wid-price">
         <ins>${{ $product['price'] }}.00</ins>
+        <div class="btn c-primary btn-sm" onclick="shopCartHelper().addProductCart({{json_encode($product)}},1)">
+            <i class="fa fa-shopping-cart"></i>
+            <span style="margin-left: 0.5rem">Añadir</span>
+        </div>
     </div>
     
-    <div class="btn c-primary btn-sm" onclick="shopCartHelper().addProductCart({{json_encode($product)}},1)">
-        <i class="fa fa-shopping-cart"></i>
-    </div>
+    
 </div>

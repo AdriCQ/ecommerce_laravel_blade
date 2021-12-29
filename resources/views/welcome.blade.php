@@ -33,6 +33,8 @@
     </div> <!-- End promo area -->
     
     <x-slider.product title="Productos Destacados" :products="$products" />
+    
+    <x-slider.destination :destinations="$destinations" />
      
     <h2 class="section-title">Todos los Productos</h2>
     
