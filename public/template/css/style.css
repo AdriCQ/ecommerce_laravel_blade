@@ -783,6 +783,7 @@ input[type="submit"]:hover, button[type=submit]:hover {background-color: #222}
 }
 .product-main-img {
     margin-bottom: 20px;
+    /* max-width: 35rem; */
 }
 .product-gallery {
     margin-bottom: 25px;
@@ -817,12 +818,12 @@ input[type="submit"]:hover, button[type=submit]:hover {background-color: #222}
     width: 50px;
 }
 .add_to_cart_button {
-    background: none repeat scroll 0 0 #5a88ca;
+    background: none repeat scroll 0 0 #fea500;
     border: medium none;
-    color: #fff;
+    color: #1d1d1d;
     padding: 6px 25px;display: inline-block
 }
-.add_to_cart_button:hover {background-color: #222;color: #fff;text-decoration: none}
+.add_to_cart_button:hover {background-color: #1d1d1d;color: #fea500;text-decoration: none}
 form.cart {
     margin-bottom: 25px;
 }

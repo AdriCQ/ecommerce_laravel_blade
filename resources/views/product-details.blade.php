@@ -22,13 +22,14 @@
                 <div class="col-sm-6">
                     <div class="product-images">
                         <div class="product-main-img">
-                            <img src="{{ asset($product['image']) }}" alt="{{ $product['name'] }}">
+                            <img src="{{ asset($product['image']) }}" alt="{{ $product['name'] }}" id="product-image-component">
                         </div>
                         
                         @if (count($product['gallery']))
                             <div class="product-gallery">
+                                <img src="{{ asset($product['image']) }}" onclick="setImage('{{ asset($product['image']) }}')">
                                 @foreach ($product['gallery'] as $gallery)
-                                    <img src="{{ asset($gallery) }}" alt="">
+                                    <img style="cursor: pointer" src="{{ asset($gallery) }}" alt="" onclick="setImage('{{ asset($gallery) }}')">
                                 @endforeach
                             </div>
                         @endif
@@ -58,3 +59,12 @@
 </div>
 
 @endsection()
+
+@section('scripts')
+<script>
+    const img = document.getElementById('product-image-component');
+    function setImage(_img){
+        img.src = _img;
+    }
+</script>
+@endsection

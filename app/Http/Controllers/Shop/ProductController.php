@@ -5,7 +5,6 @@ namespace App\Http\Controllers\Shop;
 use App\Http\Controllers\Controller;
 use App\Models\Shop\Product;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
 use Intervention\Image\Facades\Image as ImageIntervention;
@@ -84,6 +83,16 @@ class ProductController extends Controller
             $this->API_RESPONSE = $product->errors;
             $this->API_STATUS = $this->AVAILABLE_STATUS['SERVICE_UNAVAILABLE'];
         }
+        return response()->json($this->API_RESPONSE, $this->API_STATUS, [], JSON_NUMERIC_CHECK);
+    }
+    /**
+     * Product Details
+     * @param Request request
+     * @return Illuminate\Http\JsonResponse
+     */
+    public function details(int $id)
+    {
+        $this->API_RESPONSE = Product::query()->find($id);
         return response()->json($this->API_RESPONSE, $this->API_STATUS, [], JSON_NUMERIC_CHECK);
     }
 

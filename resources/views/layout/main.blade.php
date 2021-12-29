@@ -12,7 +12,7 @@
     <title>@if (isset($config) && isset($config['name']))
         {{ $config['name'] }}
     @endif</title>
-    <script src="js/vendor/vue.min.js"></script>
+    <script src="{{ asset('js/vendor/vue.min.js') }}"></script>
     
     <!-- Google Fonts -->
     <link href='http://fonts.googleapis.com/css?family=Titillium+Web:400,200,300,700,600' rel='stylesheet' type='text/css'>
@@ -47,7 +47,7 @@
     @include('components.footer')
 
 
-    <script src="js/vendor/axios.min.js"></script>
+    <script src="{{ asset('js/vendor/axios.min.js') }}"></script>
     <!-- Latest jQuery form server -->
     <script src="{{ asset('template/js/jquery.min.js') }}"></script>
     {{-- <script src="https://code.jquery.com/jquery.min.js"></script> --}}
