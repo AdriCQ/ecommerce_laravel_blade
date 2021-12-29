@@ -28,6 +28,7 @@ class ConfigController extends Controller
     {
         $validator = Validator::make($request->all(), [
             'name' => ['required', 'string'],
+            'description' => ['required', 'string'],
             'currency' => ['required', 'string'],
             'open' => ['required', 'boolean'],
             'address' => ['required', 'string'],
@@ -44,6 +45,7 @@ class ConfigController extends Controller
             if (!$config)
                 return response()->json(['No existe la configuracion'], 400, [], JSON_NUMERIC_CHECK);
             $config->name = $validator['name'];
+            $config->description = $validator['description'];
             $config->currency = $validator['currency'];
             $config->open = $validator['open'];
             $config->phone = $validator['phone'];

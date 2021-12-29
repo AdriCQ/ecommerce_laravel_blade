@@ -157,9 +157,9 @@ class ProductController extends Controller
             $product = Product::query()->find($id);
             if (!$product)
                 return response()->json(['Producto no encontrado'], 400, [], JSON_NUMERIC_CHECK);
-            $paths = $product->gallery;
-            if (!is_array($paths))
-                $paths = [];
+            // $paths = $product->gallery;
+            // if (!is_array($paths))
+            $paths = [];
             $image = $request->file('image');
             array_push($paths, $this->uploadImage($image, $product, 'gallery-' . count($paths)));
             $product->gallery = $paths;
