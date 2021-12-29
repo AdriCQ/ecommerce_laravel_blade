@@ -38,13 +38,19 @@
     <![endif]-->
   </head>
   <body>
-
+    @if (isset($config) && isset($destinations))
+        
     @include('components.header')
     @include('components.modals')
 
     @yield('content')
 
     @include('components.footer')
+    @else
+        <h1 class="text-center" style="margin-top: 15rem">Sitio en Configuración</h1>
+    @endif
+
+
 
 
     <script src="{{ asset('js/vendor/axios.min.js') }}"></script>

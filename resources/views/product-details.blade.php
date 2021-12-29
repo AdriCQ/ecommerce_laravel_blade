@@ -13,6 +13,7 @@
     </div>
 </div>
     
+@if (isset($product))
     
 <div class="single-product-area" style="padding: 1rem">
     {{-- <div class="zigzag-bottom"></div> --}}
@@ -57,6 +58,7 @@
         </div>
     </div>
 </div>
+@endif    
 
 @endsection()
 
