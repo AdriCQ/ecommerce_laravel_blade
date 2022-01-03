@@ -53,7 +53,7 @@
 
                                         <td class="product-quantity">
                                             <div class="quantity buttons_added">
-                                                <input type="number" size="4" class="input-text qty text" title="Qty" v-model="pc.qty" min="0" step="1">
+                                                <input type="number" size="4" class="input-text qty text" title="Qty" v-model="pc.qty" min="0" step="1" :max="pc.product.stock">
                                             </div>
                                         </td>
 

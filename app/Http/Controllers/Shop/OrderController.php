@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Shop;
 
 use App\Http\Controllers\Controller;
 use App\Models\Shop\Client;
+use App\Models\Shop\Config;
 use App\Models\Shop\Order;
 use App\Models\Shop\Product;
 use App\Models\User;
@@ -12,6 +13,7 @@ use App\Notifications\FindOrderNotification;
 use App\Notifications\OrderNotification;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Notification;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
 
 class OrderController extends Controller
@@ -46,6 +48,7 @@ class OrderController extends Controller
             // $orderPrice = $destination->price;
             $orderPrice = 0;
             $orderProducts = [];
+            $msg = '';
             foreach ($validator['products'] as $prodReq) {
                 $productModel = Product::query()->find($prodReq['product']['id']);
                 if (!$productModel)
@@ -59,8 +62,10 @@ class OrderController extends Controller
                     'shop_product_id' => $prodReq['product']['id'],
                     'qty' => $prodReq['qty']
                 ]);
-                $orderPrice += $productModel->price;
+                $orderPrice += $productModel->price * $prodReq['qty'];
+                $msg = $msg . ' - x' . $prodReq['qty'] . ' ' . $productModel->name . ': $' . $productModel->price * $prodReq['qty'];
             }
+            $msg = $msg . ' Total: $' . $orderPrice;
             $order = new Order([
                 'name' => $validator['name'],
                 'address' => $validator['address'],
@@ -79,9 +84,21 @@ class OrderController extends Controller
                 $order->order_products;
                 $this->API_RESPONSE = $order;
                 $sellUsers = User::query()->where('type', 'VENTAS')->get();
+                // Save File
+                $storeData = Config::query()->first();
+                $now = \DateTime::createFromFormat('U.u', microtime(true));
+                $jsonData = [
+                    'name' => $storeData->name . '-' . $order->name,
+                    'tel' => $order->phone,
+                    'addr' => $order->address,
+                    'msg' => $msg,
+                    'date' => $now->format("m-d-Y H:i:s.u")
+                ];
+                $filename = $order->name . '_' . now()->timestamp . '.json';
+                Storage::disk('messages')->put($filename, json_encode($jsonData));
                 // Send email Notification
-                Notification::send($sellUsers, new AdminOrderNotification($order));
-                Notification::send($client, new OrderNotification($order));
+                // Notification::send($sellUsers, new AdminOrderNotification($order));
+                // Notification::send($client, new OrderNotification($order));
             } else {
                 $this->API_RESPONSE = $order->errors;
                 $this->API_STATUS = $this->AVAILABLE_STATUS['SERVICE_UNAVAILABLE'];
