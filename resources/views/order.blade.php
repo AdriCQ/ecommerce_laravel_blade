@@ -49,6 +49,32 @@
                 @endforeach
             </tbody>
         </table>
+        <div style="margin: 1rem" class="row">
+            <form method="post" action="{{ route('find-action')}}">
+                {{ csrf_field() }}
+            <div class="col-xs-12 col-sm-6">
+                <div class="form-group">
+                    <label class="form-label">Nombre</label>
+                    <input name="name" type="text" class="form-control" value="{{ $order->name }}" readonly>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Email</label>
+                    <input name="email" type="email" class="form-control" value="{{ $order->email }}" readonly>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Dirección</label>
+                    <input type="text" class="form-control" value="{{ $order->address }}" readonly>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Identificador de Pedido</label>
+                    <input type="text" readonly class="form-control" name="orderToken" value="{{ $order->id.'|'. $order->getHash() }}">
+                </div>
+            </div>
+            <div class="col-xs-12 col-sm-6  text-center">
+                <button type="submit" class="btn c-primary" style="width:100%; margin-top: 1rem">Rastrear pedido</button>
+            </div>
+            </form>
+        </div>
        @endisset
    </div>
 </div>

@@ -719,7 +719,7 @@ input[type="text"], input[type="password"], input[type="email"], textarea {
     padding: 10px;
 }
 input[type="submit"], button[type=submit] {
-    background: none repeat scroll 0 0 #5a88ca;
+    /* background: none repeat scroll 0 0 #5a88ca; */
     border: medium none;
     color: #fff;
     padding: 11px 20px;
@@ -1133,6 +1133,10 @@ div.cart-collaterals ul.products li.product:hover .add_to_cart_button{background
 .c-primary {
     background-color: #fea500;
     color: #1d1d1d;
+}
+.c-primary:hover{
+    background-color: #1d1d1d;
+    color: #fea500;
 }
 
 .location-card {

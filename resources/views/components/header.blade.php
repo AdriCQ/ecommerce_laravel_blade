@@ -9,7 +9,7 @@
             </div>
             
             <div class="col-sm-6">
-                <div class="shopping-item">
+                <div class="shopping-item c-primary">
                     <a href="" id="to-cart-anchor" >Carrito<i class="fa fa-shopping-cart"></i> <span class="product-count" id="cart-count">0</span></a>
                 </div>
             </div>

@@ -8,10 +8,11 @@
                 <div class="footer-newsletter" id="footer-form">
                     <h2 class="footer-wid-title">Contáctenos</h2>
                     <div class="newsletter-form">
-                        <form action="#">
-                            <input type="email" placeholder="Email">
-                            <input type="text" placeholder="Asunto">
-                            <textarea cols="4" placeholder="Mensaje"></textarea>
+                        <form action="{{ route('contact') }}" method="post">
+                            {{ csrf_field() }}
+                            <input name="email" type="email" placeholder="Email">
+                            <input name="subject" type="text" placeholder="Asunto">
+                            <textarea name="message" cols="4" placeholder="Mensaje"></textarea>
                             <input type="submit" value="Enviar">
                         </form>
                     </div>

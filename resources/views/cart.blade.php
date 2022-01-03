@@ -83,6 +83,7 @@
                 </div>
                 <div class="col-xs-12 col-sm-6">
                     <form method="post" action="#">
+                        {{ csrf_field() }}
                         <div>
                             <div class="form-group">
                                 <label for="input-name">Nombre</label>
@@ -90,18 +91,18 @@
                             </div>
                             <div class="form-group">
                                 <label for="input-address">Dirección</label>
-                                <input v-model="form.address" class="form-control" id="input-address" type="text">
+                                <input v-model="form.address" name="address" class="form-control" id="input-address" type="text">
                             </div>
                             <div class="form-group">
                                 <label for="input-email">Email</label>
-                                <input v-model="form.email"  class="form-control" id="input-email" type="email">
+                                <input v-model="form.email" name="email"  class="form-control" id="input-email" type="email">
                             </div>
                             <div class="form-group">
                                 <label for="input-tel">Teléfono</label>
-                                <input v-model="form.phone"  class="form-control" id="input-tel" type="tel">
+                                <input v-model="form.phone" name="phone"  class="form-control" id="input-tel" type="tel">
                             </div>
                             <div name="update_cart" @click="clear" class="btn btn-danger">Limpiar Carrito</div>
-                            <div class="btn c-primary" style="margin-left: 1rem" @click="submit">Enviar</div> 
+                            <div class="btn c-primary" @click="submit" style="margin-left: 1rem"s>Enviar</div> 
                         </div>
                     </form>
                 </div>
@@ -173,14 +174,25 @@ const OrderForm = {
         },
         submit(){
             this.form.products = this.productsCart;
+            modalHandler().success('Procesando Pedido', 'Estamos procesando su orden. Por favor espere');
             axios.post(this.host + '/api/orders', this.form, {
                 headers:{
                     'Content-Type': 'application/json',
                     'Accept': 'application/json'
                 }
             })
-                .then(_r=>{console.log({response: _r}); modalHandler().success('Orden completada', 'La orden se ha almacenado en nuestros servidores')})
-                .catch(_e=>{console.log({error: _e}); modalHandler().error('Error', 'No se pudo completar la orden. Revise que los datos estén correctos.')});
+                .then(_r=>{
+                    console.log({response: _r});
+                    modalHandler().close();
+                    localStorage.clear();
+                    window.location = window.location.origin + '/order-completed';
+                    modalHandler().success('Orden completada', 'La orden se ha almacenado en nuestros servidores');
+                })
+                .catch(_e=>{
+                    modalHandler().close();
+                    console.log({error: _e}); 
+                    modalHandler().error('Error', 'No se pudo completar la orden. Revise que los datos estén correctos.');
+                });
         }
     }
 }

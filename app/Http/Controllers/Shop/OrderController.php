@@ -4,11 +4,11 @@ namespace App\Http\Controllers\Shop;
 
 use App\Http\Controllers\Controller;
 use App\Models\Shop\Client;
-use App\Models\Shop\Destination;
 use App\Models\Shop\Order;
 use App\Models\Shop\Product;
 use App\Models\User;
 use App\Notifications\AdminOrderNotification;
+use App\Notifications\FindOrderNotification;
 use App\Notifications\OrderNotification;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Notification;
@@ -86,6 +86,36 @@ class OrderController extends Controller
                 $this->API_RESPONSE = $order->errors;
                 $this->API_STATUS = $this->AVAILABLE_STATUS['SERVICE_UNAVAILABLE'];
             }
+        }
+        return response()->json($this->API_RESPONSE, $this->API_STATUS, [], JSON_NUMERIC_CHECK);
+    }
+    /**
+     * Find
+     * @param Request request
+     * @return Illuminate\Http\JsonResponse
+     */
+    public function find(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+            'name' => ['required', 'string'],
+            'email' => ['required', 'email'],
+            'orderToken' => ['required', 'string']
+        ]);
+        if ($validator->fails()) {
+            $this->API_RESPONSE['ERRORS'] = $validator->errors();
+            $this->API_STATUS = $this->AVAILABLE_STATUS['BAD_REQUEST'];
+        } else {
+            $validator = $validator->validate();
+            $orderToken = explode('|', $validator['orderToken']);
+            $orderId = $orderToken[0];
+            $token = $orderToken[1];
+            $order = Order::query()->find($orderId);
+            if (!$order)
+                return response()->json(['Orden no encontrada'], 400, [], JSON_NUMERIC_CHECK);
+            if (!$order->checkToken($token))
+                return response()->json(['Identificador no válido'], 400, [], JSON_NUMERIC_CHECK);
+            $notifiable = User::query()->where('type', 'RASTREO')->get();
+            Notification::send($notifiable, new FindOrderNotification($validator['name'], $validator['email'], $order));
         }
         return response()->json($this->API_RESPONSE, $this->API_STATUS, [], JSON_NUMERIC_CHECK);
     }

@@ -20,6 +20,14 @@ class Order extends Model
     protected $table = 'shop_orders';
     protected $guarded = ['id'];
     /**
+     * @method checkToken
+     * @return boolean
+     */
+    public function checkToken($token)
+    {
+        return Hash::check($this->getToken(), $this->getHash());
+    }
+    /**
      * @method getToken
      * @return string
      */

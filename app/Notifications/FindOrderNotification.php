@@ -2,15 +2,16 @@
 
 namespace App\Notifications;
 
-// use App\Models\Shop\Order;
 use Illuminate\Bus\Queueable;
-// use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
 
-class AdminOrderNotification extends Notification
+class FindOrderNotification extends Notification
 {
     use Queueable;
+
+    public $email;
+    public $name;
     public $order;
     public $url;
     /**
@@ -18,11 +19,13 @@ class AdminOrderNotification extends Notification
      *
      * @return void
      */
-    public function __construct($order)
+    public function __construct($name, $email, $order)
     {
+        $this->name = $name;
+        $this->email = $email;
         $this->order = $order;
-        $hash = $this->order->getHash();
-        $this->url = url('/order/' . $this->order->id . '?hash=' . $hash);
+        $hash = $order->getHash();
+        $this->url = url('/order/' . $order->id . '?hash=' . $hash);
     }
 
     /**
@@ -45,10 +48,11 @@ class AdminOrderNotification extends Notification
     public function toMail($notifiable)
     {
         return (new MailMessage)
-            ->greeting('Hola ' . $notifiable['name'])
-            ->line('Le enviamos el informe de un nuevo pedido')
-            ->action('Ver pedido', $this->url)
-            ->line('Le mantendremos informado de nuestros servicios');
+            ->greeting('Solicitud de Rastreo')
+            ->line('El cliente ' . $this->name . ' ha solicitado rastrear su pedido')
+            ->action('Buscar pedido', url($this->url))
+            ->line('Para responderle puede enviarle un email a ' . $this->email);
+        // ->action('Responder', 'mailto:' . $this->email);
     }
 
     /**
@@ -60,8 +64,7 @@ class AdminOrderNotification extends Notification
     public function toArray($notifiable)
     {
         return [
-            'order' => $this->order,
-            'url' => $this->url
+            //
         ];
     }
 }

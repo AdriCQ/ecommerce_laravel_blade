@@ -1,8 +1,6 @@
 <?php
 
 use App\Http\Controllers\ViewController;
-use App\Models\Shop\Product;
-use Facade\FlareClient\View;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -19,6 +17,9 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', [ViewController::class, 'home'])->name('home');
 
 Route::get('/cart', [ViewController::class, 'cart'])->name('cart');
+Route::post('/contact', [ViewController::class, 'contact'])->name('contact');
 Route::get('/find', [ViewController::class, 'find'])->name('find');
+Route::post('/find', [ViewController::class, 'findAction'])->name('find-action');
 Route::get('/product-details/{id}', [ViewController::class, 'productDetails'])->name('product-details');
+Route::get('/order-completed', [ViewController::class, 'orderCompleted'])->name('order-completed');
 Route::get('/order/{id}', [ViewController::class, 'orderDetails'])->name('order-details');

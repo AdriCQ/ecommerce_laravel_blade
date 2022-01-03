@@ -2,12 +2,19 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Shop\Client;
 use App\Models\Shop\Config;
 use App\Models\Shop\Destination;
 use App\Models\Shop\Order;
 use App\Models\Shop\Product;
+use App\Models\User;
+use App\Notifications\AdminOrderNotification;
+use App\Notifications\ContactNotification;
+use App\Notifications\FindOrderNotification;
+use App\Notifications\OrderNotification;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Notification;
 use Illuminate\Support\Facades\Validator;
 
 class ViewController extends Controller
@@ -89,9 +96,154 @@ class ViewController extends Controller
         ]);
         $data = $validator->validate();
         $order = Order::query()->with('order_products')->find($id);
-        $hash = $order->hash;
-        if (Hash::check($hash, $data['hash']))
+        if ($order->checkToken($data['hash'])) {
             $this->DATA['order'] = $order;
+        }
         return view('order', $this->DATA);
+    }
+
+    /**
+     * Find
+     * @param Request request
+     * @return Illuminate\Http\JsonResponse
+     */
+    public function findAction(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+            'name' => ['required', 'string'],
+            'email' => ['required', 'email'],
+            'orderToken' => ['required', 'string']
+        ]);
+        if ($validator->fails()) {
+            $this->DATA['title'] = 'Los Datos proporcionados son incorrectos';
+        } else {
+            $validator = $validator->validate();
+            $orderToken = explode('|', $validator['orderToken']);
+            $orderId = $orderToken[0];
+            $token = $orderToken[1];
+            $order = Order::query()->find($orderId);
+            if (!$order) {
+                $this->DATA['title'] = 'Orden no encontrada';
+            } else if (!$order->checkToken($token))
+                $this->DATA['title'] = 'Orden no encontrada';
+            else {
+                $notifiable = User::query()->where('type', 'RASTREO')->get();
+                Notification::send($notifiable, new FindOrderNotification($validator['name'], $validator['email'], $order));
+                $this->DATA['title'] = 'Solicitud de Rastreo Enviada.';
+                $this->DATA['content'] = ['Le enviaremos un email con la respuesta de su solicitud'];
+            }
+        }
+        return view('notification')->with($this->DATA);
+    }
+
+    /**
+     * makeOrder
+     * @param Request request
+     * @return Illuminate\Http\JsonResponse
+     */
+    public function makeOrder(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+            // 'destination_id' => ['required', 'integer'],
+            'name' => ['required', 'string'],
+            'address' => ['required', 'string'],
+            'email' => ['required', 'string'],
+            'phone' => ['required', 'numeric'],
+            // Products
+            'products.*.product.id' => ['required', 'integer'],
+            'products.*.qty' => ['required', 'integer'],
+        ]);
+        if ($validator->fails()) {
+            $this->DATA['title'] = 'Error procesando orden';
+            $this->DATA['content'] = $validator->errors()->toArray();
+        } else {
+            $validator = $validator->validate();
+            $orderPrice = 0;
+            $orderProducts = [];
+            $continue = true;
+            $reazon = '';
+            foreach ($validator['products'] as $prodReq) {
+                $productModel = Product::query()->find($prodReq['product']['id']);
+                if (!$productModel) {
+                    $continue = false;
+                    $reazon = ['Producto no encontrado'];
+                }
+                if ($productModel->stock < $prodReq['qty']) {
+                    $continue = false;
+                    $reazon = ['Inventario insuficiente'];
+                }
+                $productModel->stock -= $prodReq['qty'];
+                if (!$productModel->save())
+                    $continue = false;
+                array_push($orderProducts, [
+                    'shop_product_id' => $prodReq['product']['id'],
+                    'qty' => $prodReq['qty']
+                ]);
+                $orderPrice += $productModel->price;
+            }
+            if (!$continue) {
+                $this->DATA['title'] = 'Error procesando orden';
+                $this->DATA['content'] = $reazon;
+            }
+            $order = new Order([
+                'name' => $validator['name'],
+                'address' => $validator['address'],
+                'email' => $validator['email'],
+                'phone' => $validator['phone'],
+                'total_price' => $orderPrice,
+            ]);
+            $client = new Client(
+                $validator['name'],
+                $validator['email'],
+                $validator['phone'],
+                $validator['address'],
+            );
+            if ($order->save()) {
+                $order->order_products()->createMany($orderProducts);
+                $order->order_products;
+
+                $sellUsers = User::query()->where('type', 'VENTAS')->get();
+                // Send email Notification
+                Notification::send($sellUsers, new AdminOrderNotification($order));
+                Notification::send($client, new OrderNotification($order));
+                $this->DATA['title'] = 'Orden Guardada';
+                $this->DATA['content'] = ['Le hemos enviado un email a su correo con los datos de su pedido'];
+            } else {
+                $this->DATA['title'] = 'Error procesando orden';
+            }
+        }
+        return view('notification')->with($this->DATA);
+    }
+    /**
+     * 
+     */
+    public function orderCompleted()
+    {
+        $this->DATA['title'] = 'Orden Guardada';
+        $this->DATA['content'] = ['Le hemos enviado un email a su correo con los datos de su pedido'];
+        return view('notification')->with($this->DATA);
+    }
+    /**
+     * Contact
+     * @param Request request
+     * @return Illuminate\Http\JsonResponse
+     */
+    public function contact(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+            'subject' => ['required', 'string'],
+            'message' => ['required', 'string'],
+            'email' => ['required', 'email']
+        ]);
+        if ($validator->fails()) {
+            $this->DATA['content'] = $validator->errors()->toArray();
+            $this->DATA['title'] = 'Error al contactarnos';
+        } else {
+            $validator = $validator->validate();
+            $userContact = User::query()->when('type', 'CONTACTO')->get();
+            Notification::send($userContact, new ContactNotification($validator['email'], $validator['subject'], $validator['message']));
+            $this->DATA['title'] = 'Mensaje enviado';
+        }
+        return view('notification')->with($this->DATA);
     }
 }
