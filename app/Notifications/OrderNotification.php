@@ -48,6 +48,7 @@ class OrderNotification extends Notification
     public function toMail(Client $notifiable)
     {
         return (new MailMessage)
+            ->subject('Notificacion de Pedido')
             ->greeting('Hola ' . $notifiable->name)
             ->line('Le enviamos el informe de su pedido')
             ->action('Ver pedido', $this->url)

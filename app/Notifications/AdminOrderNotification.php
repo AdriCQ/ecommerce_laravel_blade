@@ -45,6 +45,7 @@ class AdminOrderNotification extends Notification
     public function toMail($notifiable)
     {
         return (new MailMessage)
+            ->subject('Notificacion de pedido')
             ->greeting('Hola ' . $notifiable['name'])
             ->line('Le enviamos el informe de un nuevo pedido')
             ->action('Ver pedido', $this->url)

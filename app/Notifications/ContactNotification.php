@@ -47,6 +47,7 @@ class ContactNotification extends Notification
     public function toMail($notifiable)
     {
         return (new MailMessage)
+            ->subject('Notificacion de Contacto')
             ->greeting('Hola ' . $notifiable->name)
             ->line('Hemos recibido un comentario')
             ->line($this->contact)

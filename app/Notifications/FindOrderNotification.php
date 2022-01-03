@@ -48,6 +48,7 @@ class FindOrderNotification extends Notification
     public function toMail($notifiable)
     {
         return (new MailMessage)
+            ->subject('Notificacion de Rastreo')
             ->greeting('Solicitud de Rastreo')
             ->line('El cliente ' . $this->name . ' ha solicitado rastrear su pedido')
             ->action('Buscar pedido', url($this->url))
