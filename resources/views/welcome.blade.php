@@ -32,7 +32,7 @@
         </div>
     </div> <!-- End promo area -->
     
-    <x-slider.product title="Productos Destacados" :products="$products" />
+    <x-slider.product title="Productos Destacados" :products="$top" />
     
     <x-slider.destination :destinations="$destinations" />
      

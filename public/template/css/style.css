@@ -586,8 +586,8 @@ padding: 35px 0 180px;}
 
 
 .footer-social a {
-  background: none repeat scroll 0 0 #5a88ca;
-  color: #fff;
+  background: none repeat scroll 0 0 #fea500;
+  color: #1d1d1d;
   display: inline-block;
   font-size: 20px;
   height: 40px;
@@ -598,7 +598,7 @@ padding: 35px 0 180px;}
   width: 40px;border: 1px solid #5a88ca;
 }
 
-.footer-social a:hover {background-color: #222;border-color: #666}
+.footer-social a:hover {background-color: #1d1d1d; color: #fea500;}
 
 .footer-social {margin-top: 20px}
 

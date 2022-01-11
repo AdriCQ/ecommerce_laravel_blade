@@ -24,7 +24,7 @@
                     <h2 class="footer-wid-title">Navegación</h2>
                     <ul>
                         <li><a href="{{ route('home') }}">Inicio</a></li>
-                        <li><a href="{{ route('cart') }}">Carrito</a></li>
+                        {{-- <li><a href="{{ route('cart') }}">Carrito</a></li> --}}
                         <li><a href="{{ route('find') }}">Rastrear</a></li>
                     </ul>                        
                 </div>
@@ -35,10 +35,29 @@
                     <h2>{{ $config['name'] }}</h2>
                     <p>{{ $config['description'] }}</p>
                     <div class="footer-social">
-                        <a href="#" target="_blank"><i class="fa fa-facebook"></i></a>
-                        <a href="#" target="_blank"><i class="fa fa-twitter"></i></a>
-                        <a href="#" target="_blank"><i class="fa fa-youtube"></i></a>
-                        <a href="#" target="_blank"><i class="fa fa-linkedin"></i></a>
+                      @isset($config['social_facebook'])
+                        <a href="{{ $config['social_facebook'] }}" target="_blank">
+                          <i class="fa fa-facebook"></i>
+                        </a>
+                      @endisset
+
+                      @isset($config['social_twitter'])
+                        <a href="{{ $config['social_twitter'] }}" target="_blank">
+                          <i class="fa fa-twitter"></i>
+                        </a>
+                      @endisset
+
+                      @isset($config['social_instagram'])
+                        <a href="{{ $config['social_instagram'] }}" target="_blank">
+                          <i class="fa fa-instagram"></i>
+                        </a>
+                      @endisset
+
+                      @isset($config['social_youtube'])
+                        <a href="{{ $config['social_youtube'] }}" target="_blank">
+                          <i class="fa fa-youtube"></i>
+                        </a>
+                      @endisset
                     </div>
                 </div>
             </div>

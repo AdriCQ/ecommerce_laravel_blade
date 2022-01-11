@@ -69,12 +69,13 @@ class ViewController extends Controller
    */
   public function home()
   {
-    $products = Product::all()->toArray();
-    $this->DATA['products'] = $products;
+    $products = Product::query();
+    $this->DATA['products'] = $products->get();
+    $this->DATA['top'] = $products->orderBy('purchases', 'desc')->get();
     $this->DATA['active'] = 'home';
     $this->DATA['widgets'] = [
       'orders' => Order::query()->count(),
-      'products' => \count($products)
+      'products' => $products->count()
     ];
     return view('welcome')->with($this->DATA);
   }
