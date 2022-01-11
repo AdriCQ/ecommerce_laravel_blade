@@ -51,7 +51,7 @@
                             <button class="add_to_cart_button" onclick="shopCartHelper().addProductCart({{json_encode($product)}}, document.getElementById('product-qty-input').value)">Añadir</button>
                         </div>   
                         <h2 style="margin-top: 2rem">Descripción</h2>  
-                        {{!! $product['description'] !!}}
+                        {!! $product->description !!}
                     </div> 
                 </div>                    
             </div>
