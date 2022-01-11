@@ -118,7 +118,7 @@ class FakeSeeder extends Seeder
       for ($l = 0; $l < $limits; $l++) {
         array_push($models, [
           'name' => $faker->words(4, true),
-          'description' => $faker->randomHtml,
+          'description' => $faker->text(),
           'price' => $faker->numberBetween(0, 100),
           'stock' => $faker->numberBetween(1, 10),
           'image' => '/images/default.jpg'
