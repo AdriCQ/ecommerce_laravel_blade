@@ -53,7 +53,7 @@
 
                                         <td class="product-quantity">
                                             <div class="quantity buttons_added">
-                                                <input type="number" size="4" class="input-text qty text" title="Qty" v-model="pc.qty" min="0" step="1" :max="pc.product.stock">
+                                                <input type="number" size="4" class="input-text qty text" title="Qty" v-model="pc.qty" min="0" step="1" :max="pc.product.stock" @change="onValueChange(pc.qty,pKey)">
                                             </div>
                                         </td>
 
@@ -144,6 +144,10 @@ const OrderForm = {
         host(){return host;}
     },
     methods: {
+        onValueChange(qty, id){
+          if(isNaN(Number(qty)) || qty<=0)
+            this.remove(id);
+        },
         clear(){
             shopCartHelper().clear();
         },
