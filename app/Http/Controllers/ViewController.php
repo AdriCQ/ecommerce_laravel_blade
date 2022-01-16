@@ -245,7 +245,7 @@ class ViewController extends Controller
       $this->DATA['title'] = 'Error al contactarnos';
     } else {
       $validator = $validator->validate();
-      $userContact = User::query()->when('type', 'CONTACTO')->get();
+      $userContact = User::query()->where('type', 'CONTACTO')->get();
       Notification::send($userContact, new ContactNotification($validator['email'], $validator['subject'], $validator['message']));
       $this->DATA['title'] = 'Mensaje enviado';
     }
