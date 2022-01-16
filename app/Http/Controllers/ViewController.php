@@ -69,7 +69,7 @@ class ViewController extends Controller
    */
   public function home()
   {
-    $products = Product::query();
+    $products = Product::query()->where('stock', '>', 0);
     $this->DATA['products'] = $products->get();
     $this->DATA['top'] = $products->orderBy('purchases', 'desc')->get();
     $this->DATA['active'] = 'home';
