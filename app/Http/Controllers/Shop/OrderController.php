@@ -147,4 +147,23 @@ class OrderController extends Controller
     $this->API_RESPONSE = Order::query()->with('order_products')->orderByDesc('updated_at')->get();
     return response()->json($this->API_RESPONSE, $this->API_STATUS, [], JSON_NUMERIC_CHECK);
   }
+
+  /**
+   * Remove
+   * @param Request request
+   * @return Illuminate\Http\JsonResponse
+   */
+  public function remove(int $id)
+  {
+    return Order::query()->find($id)->delete() ? response()->json() : response()->json(['Error eliminando'], 503);
+  }
+  /**
+   * Remove All
+   * @param Request request
+   * @return Illuminate\Http\JsonResponse
+   */
+  public function removeAll()
+  {
+    return Order::query()->delete() ? response()->json() : response()->json(['Error eliminando'], 503);
+  }
 }

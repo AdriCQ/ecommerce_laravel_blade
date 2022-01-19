@@ -41,7 +41,7 @@ class FakeSeeder extends Seeder
         array_push($models, [
           'name' => $faker->name(),
           'email' => $faker->email,
-          'phone' => $faker->phoneNumber,
+          'phone' => '5' . $faker->numerify('#######'),
           'password' => bcrypt('password'),
           'type' => $faker->randomElement(['RASTREO', 'VENTAS', 'CONTACTO'])
         ]);
