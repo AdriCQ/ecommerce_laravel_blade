@@ -48,7 +48,7 @@ class ProductController extends Controller
     $validator = Validator::make($request->all(), [
       'name' => ['required', 'string'],
       'price' => ['required', 'numeric'],
-      'stock' => ['required', 'integer'],
+      // 'stock' => ['required', 'integer'],
       'description' => ['required', 'string'],
     ]);
     if ($validator->fails()) {
@@ -58,6 +58,7 @@ class ProductController extends Controller
       $validator = $validator->validate();
       $validator['image'] = '/images/default.jpg';
       $validator['gallery'] = [];
+      $validator['stock'] = 1;
       $product = new Product($validator);
       if ($product->save())
         $this->API_RESPONSE = $product;
@@ -117,7 +118,7 @@ class ProductController extends Controller
     $validator = Validator::make($request->all(), [
       'name' => ['required', 'string'],
       'price' => ['required', 'numeric'],
-      'stock' => ['required', 'integer'],
+      // 'stock' => ['required', 'integer'],
       'description' => ['required', 'string'],
     ]);
     if ($validator->fails()) {
@@ -128,7 +129,7 @@ class ProductController extends Controller
       $product = Product::query()->find($productId);
       $product['name'] = $validator['name'];
       $product['price'] = $validator['price'];
-      $product['stock'] = $validator['stock'];
+      $product['stock'] = 1;
       $product['description'] = $validator['description'];
       if ($product->save())
         $this->API_RESPONSE = $product;

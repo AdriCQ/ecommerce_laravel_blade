@@ -53,9 +53,9 @@ class OrderController extends Controller
         $productModel = Product::query()->find($prodReq['product']['id']);
         if (!$productModel)
           return response()->json(['Producto no encontrado'], 400, [], JSON_NUMERIC_CHECK);
-        if ($productModel->stock < $prodReq['qty'] && $prodReq['qty'] > 0)
-          return response()->json(['No tenemos la cantidad requerida'], 400, [], JSON_NUMERIC_CHECK);
-        $productModel->stock -= $prodReq['qty'];
+        // if ($productModel->stock < $prodReq['qty'] && $prodReq['qty'] > 0)
+        //   return response()->json(['No tenemos la cantidad requerida'], 400, [], JSON_NUMERIC_CHECK);
+        // $productModel->stock -= $prodReq['qty'];
         $productModel->purchases++;
         if (!$productModel->save())
           return response()->json($productModel->errors, 503, [], JSON_NUMERIC_CHECK);

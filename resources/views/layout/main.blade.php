@@ -9,7 +9,7 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="shortcut icon" type="image/ico" href="{{ asset('favicon.ico') }}"/>
+    <link rel="shortcut icon" type="image/png" href="{{ asset('admin/icons/favicon-128x128.png') }}"/>
     <title>@if (isset($config) && isset($config['name']))
         {{ $config['name'] }}
     @endif</title>
