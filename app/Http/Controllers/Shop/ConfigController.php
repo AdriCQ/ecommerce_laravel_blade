@@ -16,7 +16,8 @@ class ConfigController extends Controller
    */
   public function get()
   {
-    $this->API_RESPONSE = Config::query()->first();
+    $this->API_RESPONSE['config'] = Config::query()->first();
+    $this->API_RESPONSE['appKey'] = env('APP_KEY');
     return response()->json($this->API_RESPONSE, $this->API_STATUS, [], JSON_NUMERIC_CHECK);
   }
   /**

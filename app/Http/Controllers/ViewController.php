@@ -54,6 +54,7 @@ class ViewController extends Controller
       }
       $this->DATA['productsCart'] = $products;
     }
+    // $intent = auth()->user()->createSetupIntent();
     return view('cart')->with($this->DATA);
   }
   /**
