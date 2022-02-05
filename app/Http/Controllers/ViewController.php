@@ -13,8 +13,9 @@ use App\Notifications\ContactNotification;
 use App\Notifications\FindOrderNotification;
 use App\Notifications\OrderNotification;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Hash;
+use Intervention\Image\Facades\Image as ImageIntervention;
 use Illuminate\Support\Facades\Notification;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
 
 class ViewController extends Controller
@@ -251,5 +252,29 @@ class ViewController extends Controller
       $this->DATA['title'] = 'Mensaje enviado';
     }
     return view('notification')->with($this->DATA);
+  }
+
+  public function uploadTest(Request $request)
+  {
+    $validator = Validator::make($request->all(), [
+      'image' => ['required', 'image']
+    ]);
+    if ($validator->fails()) {
+      $this->DATA['content'] = $validator->errors()->toArray();
+      $this->DATA['title'] = 'Error al contactarnos';
+    } else {
+      $validator = $validator->validate();
+      $image = $request->file('image');
+      $storage_path = '/files';
+      if (!Storage::disk('images')->exists($storage_path))
+        Storage::disk('images')->makeDirectory($storage_path);
+      $resizeDimension = 480;
+      // Storage::disk('images')->put($filePath, '');
+      ImageIntervention::make($image)
+        ->resize($resizeDimension, null, function ($constraints) {
+          $constraints->aspectRatio();
+        })->save(public_path('images/imagetest.jpg'));
+    }
+    return view('upload')->with($this->DATA);
   }
 }

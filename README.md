@@ -6,7 +6,7 @@ Ecommerce with Laravel 8 EloquentORM and Blade templates
 ## Required Packages
 For image handlers requried php-gd
 
-sudo apt-get install php7.4-gd
+sudo apt-get install php-gd
 
 ## Php packages
 To download PHP packages run
