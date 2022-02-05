@@ -221,18 +221,17 @@ class ProductController extends Controller
   private function uploadImage($image, Product $product, $type = 'main')
   {
     $filename = $product->id . '-' . $type . '.jpg';
-    $storage_path = '/public/products/images';
-    $public_path = '/storage/products/images';
-    if (!Storage::exists($storage_path))
-      Storage::makeDirectory($storage_path);
+    $storage_path = '/products';
+    if (!Storage::disk('images')->exists($storage_path))
+      Storage::disk('images')->makeDirectory($storage_path);
     $resizeDimension = 480;
-    $pathCpy = $storage_path  . '/' . $filename;
-    Storage::put($pathCpy, '');
+    $filePath = '/images' . $storage_path  . '/' . $filename;
+    // Storage::disk('images')->put($filePath, '');
     ImageIntervention::make($image)
       ->resize($resizeDimension, null, function ($constraints) {
         $constraints->aspectRatio();
-      })->save(storage_path('/app' . $pathCpy));
+      })->save(public_path($filePath));
 
-    return $public_path . '/' . $filename;
+    return $filePath;
   }
 }
