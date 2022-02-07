@@ -18,10 +18,10 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/', [ViewController::class, 'home'])->name('home');
 
-Route::get('/upload-test', function () {
-  return view('upload');
-});
-Route::post('/upload-test', [ViewController::class, 'uploadTest'])->name('upload-test');
+// Route::get('/upload-test', function () {
+//   return view('upload');
+// });
+// Route::post('/upload-test', [ViewController::class, 'uploadTest'])->name('upload-test');
 
 Route::get('/cart', [ViewController::class, 'cart'])->name('cart');
 Route::post('/contact', [ViewController::class, 'contact'])->name('contact');
