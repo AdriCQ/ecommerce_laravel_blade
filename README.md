@@ -29,7 +29,6 @@ nano .env
 Modify
 APP_NAME=
 APP_URL=
-APP_MESSAGES_HASH=
 
 MAIL_HOST=
 MAIL_PORT=
@@ -38,6 +37,10 @@ MAIL_USERNAME=
 MAIL_PASSWORD=
 MAIL_FROM_ADDRESS=
 MAIL_FROM_NAME=
+
+### Set hash
+nano hash
+SetNewHasApp
 
 ### Link storage folder
 

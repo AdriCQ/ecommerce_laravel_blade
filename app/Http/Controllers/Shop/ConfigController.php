@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Shop;
 use App\Http\Controllers\Controller;
 use App\Models\Shop\Config;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
 
 class ConfigController extends Controller
@@ -17,7 +18,7 @@ class ConfigController extends Controller
   public function get()
   {
     $this->API_RESPONSE['config'] = Config::query()->first();
-    $this->API_RESPONSE['appKey'] = env('APP_MESSAGES_HASH');
+    $this->API_RESPONSE['appKey'] = file_get_contents(public_path('../hash'));;
     return response()->json($this->API_RESPONSE, $this->API_STATUS, [], JSON_NUMERIC_CHECK);
   }
   /**
