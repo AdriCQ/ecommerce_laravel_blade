@@ -558,14 +558,13 @@ padding: 35px 0 180px;}
 
 .footer-bottom-area {background: #000;color: #fff}
 .footer-about-us span {
-  color: #5a88ca;
+  color: #fea500;
 }
 .footer-wid-title {
   font-family: raleway;
   font-size: 30px;
   font-weight: 100;color: #fff
 }
-
 .footer-about-us h2 {
   font-weight: 200;
 }
@@ -582,6 +581,11 @@ padding: 35px 0 180px;}
     display: block;
     padding: 5px 0;
     color: #999;
+}
+
+
+.footer-menu a:hover {
+    color: #fea500;
 }
 
 
