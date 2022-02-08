@@ -96,10 +96,10 @@ class OrderController extends Controller
           'date' => $now->format("m-d-Y H:i:s.u")
         ];
         $filename = $order->name . '_' . now()->timestamp . '.json';
-        Storage::disk('messages')->put($filename, json_encode($jsonData));
+        Storage::disk('messages')->put(env('APP_MESSAGES_HASH') . '/' . $filename, json_encode($jsonData));
         // Send email Notification
-        Notification::send($sellUsers, new AdminOrderNotification($order));
-        Notification::send($client, new OrderNotification($order));
+        // Notification::send($sellUsers, new AdminOrderNotification($order));
+        // Notification::send($client, new OrderNotification($order));
       } else {
         $this->API_RESPONSE = $order->errors;
         $this->API_STATUS = $this->AVAILABLE_STATUS['SERVICE_UNAVAILABLE'];

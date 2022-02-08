@@ -26,6 +26,19 @@ php artisan key:generate
 
 nano .env
 
+Modify
+APP_NAME=
+APP_URL=
+APP_MESSAGES_HASH=
+
+MAIL_HOST=
+MAIL_PORT=
+MAIL_ENCRYPTION=
+MAIL_USERNAME=
+MAIL_PASSWORD=
+MAIL_FROM_ADDRESS=
+MAIL_FROM_NAME=
+
 ### Link storage folder
 
 php artisan storage:link
