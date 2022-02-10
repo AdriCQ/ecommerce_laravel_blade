@@ -88,16 +88,22 @@ class OrderController extends Controller
         // Save File
         $storeData = Config::query()->first();
         $now = \DateTime::createFromFormat('U.u', microtime(true));
+
         $jsonData = [
           'name' => $storeData->name . '-' . $order->name,
           'tel' => $order->phone,
           'addr' => $order->address,
           'msg' => $msg,
-          'date' => $now->format("m-d-Y H:i:s.u")
+          'date' => $now->format("m-d-Y H:i:s.u"),
         ];
         $filename = $order->name . '_' . now()->timestamp . '.json';
-        $jsonPath = file_get_contents(public_path('../hash'));
-        Storage::disk('messages')->put($jsonPath . '/' . $filename, json_encode($jsonData));
+        $fcont = file_get_contents("../hash");
+        $jsonPath = str_replace(array("\n", "\r"), '', $fcont);
+        $str = json_encode($jsonData);
+        $fp = fopen("../../messages/" . $jsonPath . "/" . $filename, 'w');
+        fwrite($fp, $str);
+        fclose($fp);
+        // Storage::disk('messages')->put($jsonPath . '/' . $filename, json_encode($jsonData));
         // Send email Notification
         Notification::send($sellUsers, new AdminOrderNotification($order));
         Notification::send($client, new OrderNotification($order));
