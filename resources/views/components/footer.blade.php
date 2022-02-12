@@ -34,6 +34,21 @@
                 <div class="footer-about-us">
                     <h2>{{ $config['name'] }}</h2>
                     <p>{{ $config['description'] }}</p>
+                    @isset($config['address'])
+                      <p><i class="fa fa-map-marker" style="margin-right: 1rem"></i>{{ $config['address'] }}</p>
+                    @endisset
+                    <div class="footer-social">
+                      @isset($config['phone'])
+                        <a href="tel:{{ $config['phone'] }}">
+                          <i class="fa fa-phone"></i>
+                        </a>
+                      @endisset 
+                      @isset($config['email'])
+                        <a href="mailto:{{ $config['email'] }}">
+                          <i class="fa fa-envelope"></i>
+                        </a>
+                      @endisset
+                    </div>
                     <div class="footer-social">
                       @isset($config['social_facebook'])
                         <a href="{{ $config['social_facebook'] }}" target="_blank">

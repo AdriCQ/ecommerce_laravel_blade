@@ -22,7 +22,7 @@ class UserController extends Controller
   {
     $validator = Validator::make($request->all(), [
       'name' => ['required', 'string'],
-      'email' => ['required', 'email', 'unique:users'],
+      'email' => ['required', 'email'],
       'phone' => ['nullable', 'string'],
       'type' => ['required', 'in:CONTACTO,RASTREO,VENTAS'],
       // 'password' => ['required', 'string', 'confirmed'],

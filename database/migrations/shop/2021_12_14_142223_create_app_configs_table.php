@@ -19,7 +19,7 @@ class CreateAppConfigsTable extends Migration
       $table->text('description');
       // $table->string('logo_path');
       $table->string('currency')->default('USD');
-      $table->boolean('open')->default(false);
+      $table->boolean('open')->default(true);
       $table->string('address')->nullable();
       $table->string('phone')->nullable();
       $table->string('phone_extra')->nullable();

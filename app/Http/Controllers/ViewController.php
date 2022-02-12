@@ -25,6 +25,15 @@ class ViewController extends Controller
   public function __construct()
   {
     $config = Config::query()->first();
+    // Create http link
+    if (isset($config['social_facebook']) && !str_contains($config['social_facebook'], 'https://'))
+      $config['social_facebook'] = 'https://' . $config['social_facebook'];
+    if (isset($config['social_twitter']) && !str_contains($config['social_twitter'], 'https://'))
+      $config['social_twitter'] = 'https://' . $config['social_twitter'];
+    if (isset($config['social_instagram']) && !str_contains($config['social_instagram'], 'https://'))
+      $config['social_instagram'] = 'https://' . $config['social_instagram'];
+    if (isset($config['social_youtube']) && !str_contains($config['social_youtube'], 'https://'))
+      $config['social_youtube'] = 'https://' . $config['social_youtube'];
     $destinations = Destination::all()->toArray();
     $this->DATA['config'] = $config;
     $this->DATA['active'] = '';
