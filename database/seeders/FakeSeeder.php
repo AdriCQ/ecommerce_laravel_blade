@@ -82,7 +82,8 @@ class FakeSeeder extends Seeder
           'address' => $faker->address,
           'phone' => $faker->phoneNumber,
           'email' => $faker->email,
-          'total_price' => $faker->numberBetween(0, 100)
+          'total_price' => $faker->numberBetween(0, 100),
+          'created_at' => now()
         ]);
       }
       Order::query()->insert($models);
