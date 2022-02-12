@@ -50,7 +50,7 @@ class FindOrderNotification extends Notification
   {
     $config = Config::query()->first();
     return (new MailMessage)
-      ->from($config['name'])
+      ->from(env('MAIL_FROM_ADDRESS'), $config['name'])
       ->subject('Notificacion de Rastreo')
       ->greeting('Solicitud de Rastreo')
       ->line('El cliente ' . $this->name . ' ha solicitado rastrear su pedido')
