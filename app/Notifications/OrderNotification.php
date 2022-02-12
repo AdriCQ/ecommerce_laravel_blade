@@ -14,7 +14,7 @@ class OrderNotification extends Notification
 {
   use Queueable;
 
-  public Order $order;
+  public $order;
   public $url;
 
   /**
