@@ -50,7 +50,7 @@ class OrderNotification extends Notification
   {
     $config = Config::query()->first();
     return (new MailMessage)
-      ->from(env('MAIL_FROM_ADDRESS'), $config['name'])
+      // ->from(env('MAIL_FROM_ADDRESS'), $config['name'])
       ->subject('Notificacion de Pedido')
       ->greeting('Hola ' . $notifiable->name)
       ->line('Le enviamos el informe de su pedido')

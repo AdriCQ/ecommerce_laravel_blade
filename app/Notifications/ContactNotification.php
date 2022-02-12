@@ -49,7 +49,7 @@ class ContactNotification extends Notification
   {
     $config = Config::query()->first();
     return (new MailMessage)
-      ->from(env('MAIL_FROM_ADDRESS'), $config['name'])
+      // ->from(env('MAIL_FROM_ADDRESS'), $config['name'])
       ->subject('Notificacion de Contacto')
       ->greeting('Hola ' . $notifiable->name)
       ->line('Hemos recibido un comentario')

@@ -48,7 +48,7 @@ class AdminOrderNotification extends Notification
   {
     $config = Config::query()->first();
     return (new MailMessage)
-      ->from(env('MAIL_FROM_ADDRESS'), $config['name'])
+      // ->from(env('MAIL_FROM_ADDRESS'), $config['name'])
       ->subject('Notificacion de pedido')
       ->greeting('Hola ' . $notifiable['name'])
       ->line('Le enviamos el informe de un nuevo pedido')
