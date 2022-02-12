@@ -101,7 +101,7 @@ class UserController extends Controller
     $validator = Validator::make($request->all(), [
       'name' => ['required', 'string'],
       'email' => ['required', 'email'],
-      'phone' => ['nullable', 'string'],
+      'phone' => ['nullable'],
       'type' => ['required', 'in:CONTACTO,RASTREO,VENTAS'],
       // 'password' => ['required', 'string', 'confirmed'],
     ]);
