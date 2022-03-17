@@ -24,7 +24,10 @@ const OrderForm = {
       });
       return total;
     },
-    host() { return host; }
+    host() { return host; },
+    appCurrency() {
+      return currency;
+    }
   },
   methods: {
     onValueChange(qty, id) {
@@ -72,7 +75,10 @@ const OrderForm = {
           console.log({ response: _r });
           modalHandler().close();
           localStorage.clear();
-          window.location = window.location.origin + '/order-completed';
+          if (this.appCurrency === 'USD' || this.appCurrency === 'CUP')
+            window.location = window.location.origin + '/order-completed';
+          else
+            window.location = window.location.origin + `/order/pay/${_r.data.id}`;
           modalHandler().success('Orden completada', 'La orden se ha almacenado en nuestros servidores');
         })
         .catch(_e => {

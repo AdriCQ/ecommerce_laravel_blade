@@ -102,7 +102,9 @@
                                 <input v-model="form.phone" name="phone"  class="form-control" id="input-tel" type="tel">
                             </div>
                             <div name="update_cart" @click="clear" class="btn btn-danger">Limpiar Carrito</div>
-                            <div class="btn c-primary" @click="submit" style="margin-left: 1rem"s>Enviar</div> 
+                            <div class="btn c-primary" @click="submit" style="margin-left: 1rem"s>
+                              @{{ appCurrency === 'USD' || appCurrency === 'CUP'? 'Completar' : 'Pagar' }}
+                            </div> 
                         </div>
                     </form>
                 </div>
@@ -117,6 +119,9 @@
 
 
 @section('scripts')
+<script>
+  const currency = '{{ $config['currency'] }}';
+</script>
 <script src="{{ asset('js/cart.vue.js') }}"></script>
 
 @endsection()

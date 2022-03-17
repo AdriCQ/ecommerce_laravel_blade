@@ -119,6 +119,21 @@ class ViewController extends Controller
   }
 
   /**
+   * pay
+   * @param Request request
+   * @return Illuminate\Http\JsonResponse
+   */
+  public function pay(int $id)
+  {
+    $order = Order::find($id);
+    if (!$order)
+      return view('welcome')->with($this->DATA);
+    // $order->order_products;
+    $this->DATA['order'] = $order;
+    return view('pay')->with($this->DATA);
+  }
+
+  /**
    * Find
    * @param Request request
    * @return Illuminate\Http\JsonResponse

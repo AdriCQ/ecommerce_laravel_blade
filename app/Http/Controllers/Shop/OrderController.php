@@ -100,10 +100,10 @@ class OrderController extends Controller
         $fcont = file_get_contents("../hash");
         $jsonPath = str_replace(array("\n", "\r"), '', $fcont);
         $str = json_encode($jsonData);
-        $fp = fopen("../../messages/" . $jsonPath . "/" . $filename, 'w');
-        fwrite($fp, $str);
-        fclose($fp);
-        // Storage::disk('messages')->put($jsonPath . '/' . $filename, json_encode($jsonData));
+        // $fp = fopen("../../messages/" . $jsonPath . "/" . $filename, 'w');
+        // fwrite($fp, $str);
+        // fclose($fp);
+        Storage::disk('messages')->put($jsonPath . '/' . $filename, json_encode($jsonData));
         // Send email Notification
         Notification::send($sellUsers, new AdminOrderNotification($order));
         Notification::send($client, new OrderNotification($order));
