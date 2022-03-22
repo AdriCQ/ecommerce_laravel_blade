@@ -125,3 +125,7 @@
 <script src="{{ asset('js/cart.vue.js') }}"></script>
 
 @endsection()
+
+@section('extra_styles')
+  <script src="{{ asset('js/vendor/vue.min.js') }}"></script>
+@endsection

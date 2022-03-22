@@ -126,11 +126,28 @@ class ViewController extends Controller
   public function pay(int $id)
   {
     $order = Order::find($id);
-    if (!$order)
-      return view('welcome')->with($this->DATA);
-    // $order->order_products;
+    if (!$order) {
+      $this->DATA['title'] = 'No encontramos la orden';
+      return view('notification')->with($this->DATA);
+    }
     $this->DATA['order'] = $order;
     return view('pay')->with($this->DATA);
+  }
+
+  public function payCompleted(int $id)
+  {
+    $order = Order::find($id);
+    if (!$order) {
+      $this->DATA['title'] = 'No encontramos la orden';
+      return view('notification')->with($this->DATA);
+    }
+
+    $order->pay = true;
+    $order->save();
+    $this->DATA['order'] = $order;
+    $this->DATA['title'] = 'Orden Guardada';
+    $this->DATA['content'] = ['Le hemos enviado un email a su correo con los datos de su pedido'];
+    return view('notification')->with($this->DATA);
   }
 
   /**

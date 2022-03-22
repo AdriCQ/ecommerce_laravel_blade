@@ -1,0 +1,10 @@
+<CryptoPass import="10" to="https://cryptopass.privatewire.app/api/cryptopass" lang="english" wallets='{
+                "bitcoin": "1234",
+                "ethereum": "test ethereum address ",
+                "litecoin": "test litecoin address ",
+                "ripple": "test ripple address "
+            }'
+            onSubmit="(pl)=>console.log(pl)">
+  <input name="moretext" hidden readOnly type="text" value="Hola"></input>
+</CryptoPass>
+<script defer="defer" src="https://cryptopass.privatewire.app/crypass.js"></script>

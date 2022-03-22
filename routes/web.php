@@ -31,3 +31,4 @@ Route::get('/product-details/{id}', [ViewController::class, 'productDetails'])->
 Route::get('/order-completed', [ViewController::class, 'orderCompleted'])->name('order-completed');
 Route::get('/order/{id}', [ViewController::class, 'orderDetails'])->name('order-details');
 Route::get('/order/pay/{id}', [ViewController::class, 'pay'])->name('order-pay');
+Route::get('/order/pay/{id}/completed', [ViewController::class, 'payCompleted'])->name('order-pay-completed');

@@ -13,7 +13,6 @@
     <title>@if (isset($config) && isset($config['name']))
         {{ $config['name'] }}
     @endif</title>
-    <script src="{{ asset('js/vendor/vue.min.js') }}"></script>
     
     <!-- Google Fonts -->
     <link href='{{ asset('template/fonts/google-font-1.css') }}' rel='stylesheet' type='text/css'>
