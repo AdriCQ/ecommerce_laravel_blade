@@ -42,10 +42,8 @@ class ConfigController extends Controller
       'social_instagram' => ['nullable', 'string'],
       'social_youtube' => ['nullable', 'string'],
       // Crypro pass
-      'cp_bitcoin' => ['nullable', 'string'],
-      'cp_ethereum' => ['nullable', 'string'],
-      'cp_litecoin' => ['nullable', 'string'],
-      'cp_ripple' => ['nullable', 'string'],
+      'wallet' => ['nullable', 'string'],
+      'wallet_type' => ['nullable', 'string'],
     ]);
     if ($validator->fails()) {
       $this->API_RESPONSE['ERRORS'] = $validator->errors();

@@ -29,10 +29,8 @@ class CreateAppConfigsTable extends Migration
       $table->string('social_instagram')->nullable();
       $table->string('social_youtube')->nullable();
       // Crypto
-      $table->string('cp_bitcoin')->nullable();
-      $table->string('cp_ethereum')->nullable();
-      $table->string('cp_litecoin')->nullable();
-      $table->string('cp_ripple')->nullable();
+      $table->string('wallet')->nullable();
+      $table->string('wallet_type')->nullable();
       $table->timestamps();
     });
   }

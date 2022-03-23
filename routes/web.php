@@ -29,6 +29,6 @@ Route::get('/find', [ViewController::class, 'find'])->name('find');
 Route::post('/find', [ViewController::class, 'findAction'])->name('find-action');
 Route::get('/product-details/{id}', [ViewController::class, 'productDetails'])->name('product-details');
 Route::get('/order-completed', [ViewController::class, 'orderCompleted'])->name('order-completed');
-Route::get('/order/{id}', [ViewController::class, 'orderDetails'])->name('order-details');
+Route::get('/order/pay-completed', [ViewController::class, 'payCompleted'])->name('order-pay-completed');
 Route::get('/order/pay/{id}', [ViewController::class, 'pay'])->name('order-pay');
-Route::get('/order/pay/{id}/completed', [ViewController::class, 'payCompleted'])->name('order-pay-completed');
+Route::get('/order/{id}', [ViewController::class, 'orderDetails'])->name('order-details');

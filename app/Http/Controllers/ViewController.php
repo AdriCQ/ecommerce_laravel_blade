@@ -13,6 +13,7 @@ use App\Notifications\ContactNotification;
 use App\Notifications\FindOrderNotification;
 use App\Notifications\OrderNotification;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Hash;
 use Intervention\Image\Facades\Image as ImageIntervention;
 use Illuminate\Support\Facades\Notification;
 use Illuminate\Support\Facades\Storage;
@@ -131,22 +132,35 @@ class ViewController extends Controller
       return view('notification')->with($this->DATA);
     }
     $this->DATA['order'] = $order;
+    $this->DATA['confirmation'] = bcrypt($order->id);
     return view('pay')->with($this->DATA);
   }
 
-  public function payCompleted(int $id)
+  public function payCompleted(Request $request)
   {
-    $order = Order::find($id);
+    $validator = Validator::make($request->all(), [
+      'confirmation' => ['required', 'string'],
+      'id' => ['required', 'integer']
+    ]);
+    if ($validator->fails()) {
+      return response()->json($validator->errors()->toArray(), 400);
+    }
+    $validator = $validator->validate();
+    $order = Order::find($validator['id']);
     if (!$order) {
       $this->DATA['title'] = 'No encontramos la orden';
       return view('notification')->with($this->DATA);
     }
-
-    $order->pay = true;
-    $order->save();
-    $this->DATA['order'] = $order;
-    $this->DATA['title'] = 'Orden Guardada';
-    $this->DATA['content'] = ['Le hemos enviado un email a su correo con los datos de su pedido'];
+    if (!Hash::check($order->id, $validator['confirmation'])) {
+      $this->DATA['title'] = 'Error de pago';
+      $this->DATA['content'] = ['No hemos podido confirmar el pago'];
+    } else {
+      $order->pay = true;
+      $order->save();
+      $this->DATA['order'] = $order;
+      $this->DATA['title'] = 'Orden Guardada';
+      $this->DATA['content'] = ['Le hemos enviado un email a su correo con los datos de su pedido'];
+    }
     return view('notification')->with($this->DATA);
   }
 
