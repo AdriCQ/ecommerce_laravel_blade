@@ -4,9 +4,21 @@
 
 <div class="single-product-area" style="margin: 2rem 0 2rem 0">
 
-  <cryptopass import="{{$order['total_price']}}" to="https://cryptopass.privatewire.app/api/cryptopass" email="{{ $order['email'] }}" lang="english" onaccept="onAccept()" onerror="onReject()" wallets='{
-              "{{ $config['wallet_type'] }}": "{{ $config['wallet'] }}"
-          }' onsubmit="onSubmit" onaccept="onAccept" onerror="onError" onreject="onReject">
+  <cryptopass 
+    import="{{$order['total_price']}}" 
+    to="https://cryptopass.privatewire.app/api/cryptopass"
+    email="{{ $order['email'] }}"
+    lang="english"
+    onaccept="onAccept()"
+    onerror="onReject()"
+    wallets='{
+      "{{ $config['wallet_type'] }}": "{{ $config['wallet'] }}"
+    }'
+    onsubmit="onSubmit"
+    onaccept="onAccept"
+    onerror="onError"
+    onreject="onReject"
+  >
     <input name="moretext" hidden readOnly type="text" value="{{ json_encode($order) }}"></input>
   </cryptopass>
 </div>
@@ -19,9 +31,12 @@
   let submit = false;
 
   function onAccept(evt) {
+    console.log('onAccept', evt);
     if (submit) {
-      console.log('onAccept', evt);
-      window.location = window.location.origin + "/order/pay-completed?confirmation={{ htmlentities($confirmation) }}&id={{$order['id'] }}";
+      setTimeout(() => {
+        window.location = window.location.origin + "/order/pay-completed?confirmation={{ htmlentities($confirmation) }}&id={{$order['id'] }}";
+      }, 500);
+      
     }
   }
 
