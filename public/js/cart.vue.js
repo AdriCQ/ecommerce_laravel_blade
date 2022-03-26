@@ -75,10 +75,8 @@ const OrderForm = {
           console.log({ response: _r });
           modalHandler().close();
           localStorage.clear();
-          if (this.appCurrency === 'USD' || this.appCurrency === 'CUP')
-            window.location = window.location.origin + '/order-completed';
-          else
-            window.location = window.location.origin + `/order/pay/${_r.data.id}`;
+
+          window.location = window.location.origin + `/order/pay/${_r.data.id}`;
           modalHandler().success('Orden completada', 'La orden se ha almacenado en nuestros servidores');
         })
         .catch(_e => {
