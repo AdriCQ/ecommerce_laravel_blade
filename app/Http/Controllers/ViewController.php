@@ -157,6 +157,39 @@ class ViewController extends Controller
     } else {
       $order->pay = true;
       $order->save();
+
+      $msg = '';
+      $orderPrice = 0;
+      foreach ($order->order_products as $op) {
+        $productModel = $op->product;
+        $msg = $msg . ' - x' . $op->qty . ' ' . $productModel->name . ': $' . $productModel->price * $op->qty;
+        $orderPrice += $productModel->price * $op->qty;
+      }
+      $msg = $msg . ' Total: $' . $orderPrice;
+
+      // Save File
+      $storeData = Config::query()->first();
+      $now = \DateTime::createFromFormat('U.u', microtime(true));
+      $sellUsers = User::query()->where('type', 'VENTAS')->get();
+
+      $jsonData = [
+        'name' => $storeData->name . '-' . $order->name,
+        'tel' => $order->phone,
+        'addr' => $order->address,
+        'msg' => $msg,
+        'date' => $now->format("m-d-Y H:i:s.u"),
+      ];
+      $filename = $order->name . '_' . now()->timestamp . '.json';
+      $fcont = file_get_contents("../hash");
+      $jsonPath = str_replace(array("\n", "\r"), '', $fcont);
+      $str = json_encode($jsonData);
+      // $fp = fopen("../../messages/" . $jsonPath . "/" . $filename, 'w');
+      // fwrite($fp, $str);
+      // fclose($fp);
+      Storage::disk('messages')->put($jsonPath . '/' . $filename, $str);
+      // Send email Notification
+      Notification::send($sellUsers, new AdminOrderNotification($order));
+
       $this->DATA['order'] = $order;
       $this->DATA['title'] = 'Orden Guardada';
       $this->DATA['content'] = ['Le hemos enviado un email a su correo con los datos de su pedido'];
@@ -193,85 +226,6 @@ class ViewController extends Controller
         Notification::send($notifiable, new FindOrderNotification($validator['name'], $validator['email'], $order));
         $this->DATA['title'] = 'Solicitud de Rastreo Enviada.';
         $this->DATA['content'] = ['Le enviaremos un email con la respuesta de su solicitud'];
-      }
-    }
-    return view('notification')->with($this->DATA);
-  }
-
-  /**
-   * makeOrder
-   * @param Request request
-   * @return Illuminate\Http\JsonResponse
-   */
-  public function makeOrder(Request $request)
-  {
-    $validator = Validator::make($request->all(), [
-      // 'destination_id' => ['required', 'integer'],
-      'name' => ['required', 'string'],
-      'address' => ['required', 'string'],
-      'email' => ['required', 'string'],
-      'phone' => ['required', 'numeric'],
-      // Products
-      'products.*.product.id' => ['required', 'integer'],
-      'products.*.qty' => ['required', 'integer'],
-    ]);
-    if ($validator->fails()) {
-      $this->DATA['title'] = 'Error procesando orden';
-      $this->DATA['content'] = $validator->errors()->toArray();
-    } else {
-      $validator = $validator->validate();
-      $orderPrice = 0;
-      $orderProducts = [];
-      $continue = true;
-      $reazon = '';
-      foreach ($validator['products'] as $prodReq) {
-        $productModel = Product::query()->find($prodReq['product']['id']);
-        if (!$productModel) {
-          $continue = false;
-          $reazon = ['Producto no encontrado'];
-        }
-        if ($productModel->stock < $prodReq['qty']) {
-          $continue = false;
-          $reazon = ['Inventario insuficiente'];
-        }
-        $productModel->stock -= $prodReq['qty'];
-        if (!$productModel->save())
-          $continue = false;
-        array_push($orderProducts, [
-          'shop_product_id' => $prodReq['product']['id'],
-          'qty' => $prodReq['qty']
-        ]);
-        $orderPrice += $productModel->price;
-      }
-      if (!$continue) {
-        $this->DATA['title'] = 'Error procesando orden';
-        $this->DATA['content'] = $reazon;
-      }
-      $order = new Order([
-        'name' => $validator['name'],
-        'address' => $validator['address'],
-        'email' => $validator['email'],
-        'phone' => $validator['phone'],
-        'total_price' => $orderPrice,
-      ]);
-      $client = new Client(
-        $validator['name'],
-        $validator['email'],
-        $validator['phone'],
-        $validator['address'],
-      );
-      if ($order->save()) {
-        $order->order_products()->createMany($orderProducts);
-        $order->order_products;
-
-        $sellUsers = User::query()->where('type', 'VENTAS')->get();
-        // Send email Notification
-        Notification::send($sellUsers, new AdminOrderNotification($order));
-        Notification::send($client, new OrderNotification($order));
-        $this->DATA['title'] = 'Orden Guardada';
-        $this->DATA['content'] = ['Le hemos enviado un email a su correo con los datos de su pedido'];
-      } else {
-        $this->DATA['title'] = 'Error procesando orden';
       }
     }
     return view('notification')->with($this->DATA);

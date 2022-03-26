@@ -81,7 +81,7 @@ class FakeSeeder extends Seeder
           'name' => $faker->name(),
           'address' => $faker->address,
           'phone' => $faker->phoneNumber,
-          'email' => $faker->email,
+          // 'email' => $faker->email,
           'total_price' => $faker->numberBetween(0, 100),
           'created_at' => now()
         ]);

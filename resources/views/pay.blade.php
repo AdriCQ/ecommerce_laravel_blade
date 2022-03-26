@@ -7,7 +7,6 @@
   <cryptopass 
     import="{{$order['total_price']}}" 
     to="https://cryptopass.privatewire.app/api/cryptopass"
-    email="{{ $order['email'] }}"
     lang="english"
     onaccept="onAccept()"
     onerror="onReject()"
@@ -33,7 +32,9 @@
   function onAccept(evt) {
     console.log('onAccept', evt);
     if (submit) {
+      // modalHandler().success('Orden completada', 'La orden se ha almacenado en nuestros servidores');
       setTimeout(() => {
+        localStorage.clear();
         window.location = window.location.origin + "/order/pay-completed?confirmation={{ htmlentities($confirmation) }}&id={{$order['id'] }}";
       }, 500);
       
@@ -45,7 +46,10 @@
   }
 
   function onReject(evt) {
-    if (submit) console.log('onReject', evt);
+    if (submit) {
+      console.log('onReject', evt);
+      modalHandler().error('Error', 'No se pudo completar la orden. Revise que los datos estén correctos.');
+    }
   }
 
   function onSubmit(evt) {

@@ -10,7 +10,11 @@
             
             <div class="col-sm-6">
                 <div class="shopping-item c-primary">
-                    <a href="" id="to-cart-anchor" >Carrito ({{ $config['wallet_type']}})<i class="fa fa-shopping-cart"></i> <span class="product-count" id="cart-count">0</span></a>
+                    <a href="" id="to-cart-anchor" >Carrito 
+                      @if(isset($config['wallet_type']))
+                      ({{ $config['wallet_type']}})
+                      @endif
+                      <i class="fa fa-shopping-cart"></i> <span class="product-count" id="cart-count">0</span></a>
                 </div>
             </div>
         </div>

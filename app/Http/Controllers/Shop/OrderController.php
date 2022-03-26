@@ -3,17 +3,18 @@
 namespace App\Http\Controllers\Shop;
 
 use App\Http\Controllers\Controller;
-use App\Models\Shop\Client;
-use App\Models\Shop\Config;
+// use App\Models\Shop\Client;
+// use App\Models\Shop\Config;
 use App\Models\Shop\Order;
 use App\Models\Shop\Product;
 use App\Models\User;
-use App\Notifications\AdminOrderNotification;
+// use App\Notifications\AdminOrderNotification;
 use App\Notifications\FindOrderNotification;
-use App\Notifications\OrderNotification;
+// use App\Notifications\OrderNotification;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Notification;
-use Illuminate\Support\Facades\Storage;
+// use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
 
 class OrderController extends Controller
@@ -29,7 +30,7 @@ class OrderController extends Controller
       // 'destination_id' => ['required', 'integer'],
       'name' => ['required', 'string'],
       'address' => ['required', 'string'],
-      'email' => ['required', 'string'],
+      // 'email' => ['required', 'string'],
       'phone' => ['required', 'numeric'],
       // Products
       'products.*.product.id' => ['required', 'integer'],
@@ -70,43 +71,16 @@ class OrderController extends Controller
       $order = new Order([
         'name' => $validator['name'],
         'address' => $validator['address'],
-        'email' => $validator['email'],
+        // 'email' => $validator['email'],
         'phone' => $validator['phone'],
         'total_price' => $orderPrice,
       ]);
-      $client = new Client(
-        $validator['name'],
-        $validator['email'],
-        $validator['phone'],
-        $validator['address'],
-      );
       if ($order->save()) {
         $order->order_products()->createMany($orderProducts);
         $order->order_products;
         $this->API_RESPONSE = $order;
-        $sellUsers = User::query()->where('type', 'VENTAS')->get();
-        // Save File
-        $storeData = Config::query()->first();
-        $now = \DateTime::createFromFormat('U.u', microtime(true));
 
-        $jsonData = [
-          'name' => $storeData->name . '-' . $order->name,
-          'tel' => $order->phone,
-          'addr' => $order->address,
-          'msg' => $msg,
-          'date' => $now->format("m-d-Y H:i:s.u"),
-        ];
-        $filename = $order->name . '_' . now()->timestamp . '.json';
-        $fcont = file_get_contents("../hash");
-        $jsonPath = str_replace(array("\n", "\r"), '', $fcont);
-        $str = json_encode($jsonData);
-        // $fp = fopen("../../messages/" . $jsonPath . "/" . $filename, 'w');
-        // fwrite($fp, $str);
-        // fclose($fp);
-        Storage::disk('messages')->put($jsonPath . '/' . $filename, json_encode($jsonData));
-        // Send email Notification
-        Notification::send($sellUsers, new AdminOrderNotification($order));
-        Notification::send($client, new OrderNotification($order));
+        // Notification::send($client, new OrderNotification($order));
       } else {
         $this->API_RESPONSE = $order->errors;
         $this->API_STATUS = $this->AVAILABLE_STATUS['SERVICE_UNAVAILABLE'];
@@ -153,6 +127,26 @@ class OrderController extends Controller
   {
     $this->API_RESPONSE = Order::query()->with('order_products')->orderByDesc('updated_at')->get();
     return response()->json($this->API_RESPONSE, $this->API_STATUS, [], JSON_NUMERIC_CHECK);
+  }
+
+  /**
+   * Remove
+   * @param Request request
+   * @return Illuminate\Http\JsonResponse
+   */
+  public function rem(Request $request)
+  {
+    $validator = Validator::make($request->all(), [
+      'orderId' => ['required', 'integer'],
+    ]);
+    if ($validator->fails()) {
+      return \response()->json(null, 400);
+    } else {
+      $validator = $validator->validate();
+      $id = $validator['orderId'];
+      $order = Order::find($id);
+      return $order &&  $order->delete() ? response()->json() : response()->json(['Error eliminando'], 503);
+    }
   }
 
   /**

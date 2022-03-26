@@ -58,6 +58,7 @@ function shopCartHelper() {
   }
 
   function update(_cart) {
+    console.log('updateCart', _cart);
     localStorage.setItem(STORAGE_KEY, JSON.stringify(_cart))
   }
 

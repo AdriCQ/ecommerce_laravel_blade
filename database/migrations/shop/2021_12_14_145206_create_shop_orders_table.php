@@ -18,7 +18,7 @@ class CreateShopOrdersTable extends Migration
       $table->string('name');
       $table->string('address');
       $table->string('phone');
-      $table->string('email');
+      // $table->string('email');
       $table->unsignedDecimal('total_price', 8, 2);
       $table->boolean('pay')->default(false);
       $table->timestamps();
