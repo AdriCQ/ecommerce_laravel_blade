@@ -3,11 +3,10 @@
 @section('content')
 
 <div class="single-product-area" style="margin: 2rem 0 2rem 0">
-
   <cryptopass 
     import="{{$order['total_price']}}" 
     to="https://cryptopass.privatewire.app/api/cryptopass"
-    lang="english"
+    lang="spanish"
     onaccept="onAccept()"
     onerror="onReject()"
     wallets='{
@@ -18,7 +17,7 @@
     onerror="onError"
     onreject="onReject"
   >
-    <input name="moretext" hidden readOnly type="text" value="{{ json_encode($order) }}"></input>
+    <input name="moretext" hidden readOnly type="text" value="{{ $moretext }}"></input>
   </cryptopass>
 </div>
 @endsection()
@@ -32,11 +31,11 @@
   function onAccept(evt) {
     console.log('onAccept', evt);
     if (submit) {
-      // modalHandler().success('Orden completada', 'La orden se ha almacenado en nuestros servidores');
+      localStorage.clear();
+      modalHandler().success('Orden completada', 'La orden se ha almacenado en nuestros servidores');
       setTimeout(() => {
-        localStorage.clear();
         window.location = window.location.origin + "/order/pay-completed?confirmation={{ htmlentities($confirmation) }}&id={{$order['id'] }}";
-      }, 500);
+      }, 1500);
       
     }
   }
