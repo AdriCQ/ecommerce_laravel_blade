@@ -200,7 +200,7 @@ class ViewController extends Controller
 
       $this->DATA['order'] = $order;
       $this->DATA['title'] = 'Orden Guardada';
-      $this->DATA['content'] = ['Le hemos enviado un email a su correo con los datos de su pedido'];
+      $this->DATA['content'] = ['Su pedido ha sido pagado correctamente. Gracias por usar nuestro servicio.'];
     }
     return view('notification')->with($this->DATA);
   }
