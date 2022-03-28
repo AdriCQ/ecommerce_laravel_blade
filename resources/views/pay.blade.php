@@ -7,15 +7,13 @@
     import="{{$order['total_price']}}" 
     to="https://cryptopass.privatewire.app/api/cryptopass"
     lang="spanish"
-    onaccept="onAccept()"
-    onerror="onReject()"
+    
     wallets='{
       "{{ $config['wallet_type'] }}": "{{ $config['wallet'] }}"
     }'
     onsubmit="onSubmit"
-    onaccept="onAccept"
-    onerror="onError"
     onreject="onReject"
+    onaccept="onAccept"
   >
     <input name="moretext" hidden readOnly type="text" value="{{ $moretext }}"></input>
   </cryptopass>
