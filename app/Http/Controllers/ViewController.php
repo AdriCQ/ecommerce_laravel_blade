@@ -201,6 +201,8 @@ class ViewController extends Controller
       $this->DATA['order'] = $order;
       $this->DATA['title'] = 'Orden Guardada';
       $this->DATA['content'] = ['Su pedido ha sido pagado correctamente. Gracias por usar nuestro servicio.'];
+      $this->DATA['track_url'] =
+        url('/order/' . $order->id . '?hash=' . $order->getHash());
     }
     return view('notification')->with($this->DATA);
   }
