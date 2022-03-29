@@ -3,10 +3,11 @@
 @section('content')
 
 <div class="single-product-area" style="margin: 2rem 0 2rem 0">
-  <cryptopass 
+  <cryptopass e
     import="{{$order['total_price']}}" 
     to="https://cryptopass.privatewire.app/api/cryptopass"
     lang="spanish"
+    email="{{ $order['email'] }}"
     
     wallets='{
       "{{ $config['wallet_type'] }}": "{{ $config['wallet'] }}"
@@ -55,7 +56,9 @@
   }
 </script>
 <script src="https://cryptopass.privatewire.app/crypass.js"></script>
-
+<script>
+  $('input[type=email]').first().val("{{ $order['email'] }}");
+</script>
 @endsection()
 
 @section('extra_styles')

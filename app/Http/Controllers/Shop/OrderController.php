@@ -10,6 +10,7 @@ use App\Models\Shop\Product;
 use App\Models\User;
 // use App\Notifications\AdminOrderNotification;
 use App\Notifications\FindOrderNotification;
+use App\Notifications\OrderNotification;
 // use App\Notifications\OrderNotification;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
@@ -30,8 +31,8 @@ class OrderController extends Controller
       // 'destination_id' => ['required', 'integer'],
       'name' => ['required', 'string'],
       'address' => ['required', 'string'],
-      // 'email' => ['required', 'string'],
-      'phone' => ['required', 'numeric'],
+      'email' => ['required', 'string'],
+      'phone' => ['required', 'string'],
       // Products
       'products.*.product.id' => ['required', 'integer'],
       'products.*.qty' => ['required', 'integer'],
@@ -71,7 +72,7 @@ class OrderController extends Controller
       $order = new Order([
         'name' => $validator['name'],
         'address' => $validator['address'],
-        // 'email' => $validator['email'],
+        'email' => $validator['email'],
         'phone' => $validator['phone'],
         'total_price' => $orderPrice,
       ]);
@@ -80,6 +81,7 @@ class OrderController extends Controller
         $order->order_products;
         $this->API_RESPONSE = $order;
 
+        // $client = new User(['name' => $order->name, 'email' => $order->email]);
         // Notification::send($client, new OrderNotification($order));
       } else {
         $this->API_RESPONSE = $order->errors;
@@ -145,7 +147,7 @@ class OrderController extends Controller
       $validator = $validator->validate();
       $id = $validator['orderId'];
       $order = Order::find($id);
-      return $order &&  $order->delete() ? response()->json() : response()->json(['Error eliminando'], 503);
+      return response()->json($order && $order->delete(), 200, [], JSON_NUMERIC_CHECK);
     }
   }
 

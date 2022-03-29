@@ -93,10 +93,10 @@
                                 <label for="input-address">Dirección</label>
                                 <input v-model="form.address" name="address" class="form-control" id="input-address" type="text">
                             </div>
-                            {{-- <div class="form-group">
+                            <div class="form-group">
                                 <label for="input-email">Email</label>
                                 <input v-model="form.email" name="email"  class="form-control" id="input-email" type="email">
-                            </div> --}}
+                            </div>
                             <div class="form-group">
                                 <label for="input-tel">Teléfono</label>
                                 <input v-model="form.phone" name="phone"  class="form-control" id="input-tel" type="tel">

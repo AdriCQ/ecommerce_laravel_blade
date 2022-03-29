@@ -8,7 +8,7 @@ const OrderForm = {
         name: '',
         address: '',
         phone: '',
-        // email: ''
+        email: ''
       },
       productsCart: [],
     }
@@ -56,7 +56,7 @@ const OrderForm = {
       }).then(_resp => {
         if (_resp.data)
           this.productsCart = _resp.data;
-      }).catch(_e => { console.log({ error: _e }); modalHandler().error('Atención', '<p>No hay productos en el carrito</p>'); })
+      }).catch(_e => { console.log({ error: _e }); localStorage.clear(); modalHandler().error('Atención', '<p>No hay productos en el carrito</p>'); })
     },
     productDetails(_id) {
       return this.host + '/product-details/' + _id;
@@ -84,9 +84,13 @@ const OrderForm = {
               }
             })
               .then(_r => {
+                console.log(_r);
                 if (_r.status === 200 || _r.status === 201) {
                   localStorage.setItem('orderId', _r.data.id);
                   window.location = window.location.origin + `/order/pay/${_r.data.id}`;
+                } else {
+                  modalHandler().close();
+                  modalHandler().error('Error', 'No se pudo completar la orden. Revise que los datos estén correctos.');
                 }
               })
               .catch(_e => {

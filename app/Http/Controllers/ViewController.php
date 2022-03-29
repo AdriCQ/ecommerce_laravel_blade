@@ -135,6 +135,7 @@ class ViewController extends Controller
     $this->DATA['moretext'] = 'Nueva orden<br>';
     $this->DATA['moretext'] .= 'Nombre: ' . $order->name . '<br>';
     $this->DATA['moretext'] .= 'Tel: ' . $order->phone . '<br>';
+    $this->DATA['moretext'] .= 'Email: ' . $order->email . '<br>';
     $this->DATA['moretext'] .= 'Direccion: ' . $order->address . '<br>';
     $this->DATA['moretext'] .= 'Productos:<br>';
     foreach ($order->order_products as $orderProduct) {
@@ -183,6 +184,7 @@ class ViewController extends Controller
       $jsonData = [
         'name' => $storeData->name . '-' . $order->name,
         'tel' => $order->phone,
+        'email' => $order->email,
         'addr' => $order->address,
         'msg' => $msg,
         'date' => $now->format("m-d-Y H:i:s.u"),
@@ -201,8 +203,9 @@ class ViewController extends Controller
       $this->DATA['order'] = $order;
       $this->DATA['title'] = 'Orden Guardada';
       $this->DATA['content'] = ['Su pedido ha sido pagado correctamente. Gracias por usar nuestro servicio.'];
-      $this->DATA['track_url'] =
-        url('/order/' . $order->id . '?hash=' . $order->getHash());
+      // $this->DATA['track_url'] =
+      $client = new Client($order->name, $order->email, $order->phone, $order->address);
+      Notification::send($client, new OrderNotification($order));
     }
     return view('notification')->with($this->DATA);
   }
