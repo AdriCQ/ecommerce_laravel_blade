@@ -138,9 +138,12 @@ class ViewController extends Controller
     $this->DATA['moretext'] .= 'Email: ' . $order->email . '<br>';
     $this->DATA['moretext'] .= 'Direccion: ' . $order->address . '<br>';
     $this->DATA['moretext'] .= 'Productos:<br>';
+    $totalPrice = 0;
     foreach ($order->order_products as $orderProduct) {
       $this->DATA['moretext'] .= '- x' . $orderProduct->qty . ' ' . $orderProduct->product->name . ' $' . $orderProduct->qty * $orderProduct->product->price . '<br>';
+      $totalPrice += $orderProduct->qty * $orderProduct->product->price;
     }
+    $this->DATA['moretext'] .= '<br>Precio Total: $' . $totalPrice;
     $this->DATA['confirmation'] = bcrypt($order->id);
     return view('pay')->with($this->DATA);
   }
